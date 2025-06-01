@@ -71,7 +71,7 @@ const Search = () => {
                     <div className='w-full h-full'>
                         <input
                             type='text'
-                            placeholder='Search for atta dal and more.'
+                            placeholder='Search....'
                             autoFocus
                             defaultValue={searchText}
                             className='bg-transparent w-full h-full outline-none'

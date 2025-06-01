@@ -1,4 +1,4 @@
-// import React, { useEffect, useState } from 'react'
+ // import React, { useEffect, useState } from 'react'
 // import SummaryApi from '../common/SummaryApi'
 // import AxiosToastError from '../utils/AxiosToastError'
 // import Axios from '../utils/Axios'
@@ -417,7 +417,7 @@ const ProductAdmin = () => {
 
   // Manually set the userId here for testing purposes
   useEffect(() => {
-    const userId = '67e7dc4d9f785f810f75dc4e';  // Manually setting the userId
+    const userId = localStorage.getItem("userId");  // Manually setting the userId
     setUserId(userId);
   }, []);
 

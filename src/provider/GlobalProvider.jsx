@@ -98,7 +98,7 @@ const GlobalProvider = ({children}) => {
   },[cartItem])
 
     const handleLogoutOut = ()=>{
-        localStorage.clear()
+      // localStorage.clear() // in here i comment this bcz when login not store user data in local storage
         dispatch(handleAddItemCart([]))
     }
 

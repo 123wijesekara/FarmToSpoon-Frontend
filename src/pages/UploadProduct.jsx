@@ -1,4 +1,4 @@
-// import React, { useState } from 'react'
+ // import React, { useState } from 'react'
 // import { FaCloudUploadAlt } from "react-icons/fa";
 // import uploadImage from '../utils/UploadImage';
 // import Loading from '../components/Loading';
@@ -474,7 +474,7 @@ const UploadProduct = () => {
   const [openAddField, setOpenAddField] = useState(false);
   const [fieldName, setFieldName] = useState("");
 
-  const userId = useSelector(state => state.auth?.userId); // Use optional chaining to prevent error if undefined
+  const userId = useSelector(state => state.auth?.userId);  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -589,7 +589,7 @@ const UploadProduct = () => {
   
     // Retrieve userId from localStorage
     
-      const userId = "67e7dc4d9f785f810f75dc4e"; 
+    const userId = localStorage.getItem("userId");
     if (!userId) {
       alert("User ID is missing or invalid. Please log in again.");
     

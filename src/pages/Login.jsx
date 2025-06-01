@@ -1,4 +1,4 @@
-// import React, { useState } from 'react';
+ // import React, { useState } from 'react';
 // import { FaRegEyeSlash, FaRegEye } from "react-icons/fa6";
 // import toast from 'react-hot-toast';
 // import Axios from '../utils/Axios';
@@ -273,11 +273,11 @@
 
 
 
-
 import React, { useState } from 'react';
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa6";
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import Cookies from 'js-cookie';  // <-- Make sure you import this
 import Axios from '../utils/Axios';
 import SummaryApi from '../common/SummaryApi';
 import AxiosToastError from '../utils/AxiosToastError';
@@ -286,227 +286,153 @@ import { useDispatch } from 'react-redux';
 import { setUserDetails } from '../store/userSlice';
 import defaultImage from '../assets/default.png';
 import '../pages/Login.css';
-// Import the CSS file
 
 const Login = () => {
-    const [data, setData] = useState({ email: "", password: "" });
-    const [showPassword, setShowPassword] = useState(false);
-    const [error, setError] = useState("");
-    const navigate = useNavigate();
-    const location = useLocation();
-    const dispatch = useDispatch();
+  const [data, setData] = useState({ email: "", password: "" });
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
+  const dispatch = useDispatch();
 
-    const role = new URLSearchParams(location.search).get('role');
+  const role = new URLSearchParams(location.search).get('role');
 
-    const handleChange = (e) => {
-        setData((prev) => ({
-            ...prev,
-            [e.target.name]: e.target.value
-        }));
-    };
+  const handleChange = (e) => {
+    setData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
+  };
 
-    const validateEmail = (email) => {
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return re.test(String(email).toLowerCase());
-    };
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+  };
 
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
-    //     setError("");
-       
-    //     if (!validateEmail(data.email)) {
-    //         setError('Please enter a valid email address.');
-    //         return;
-    //     }
-
-    //     if (data.password.length < 6) {
-    //         setError('Password must be at least 6 characters long.');
-    //         return;
-    //     }
-    //     console.log("🔹 Data sent to backend:", data); 
-    //     try {
-    //         const response = await Axios({
-    //             ...SummaryApi.login,
-    //             data: data
-    //         });
-    //         console.log("🔹 API Response:", response.data);
-    //         if (response.data.error) {
-    //             toast.error(response.data.message);
-    //             return;
-    //         }
-
-    //         if (response.data.success) {
-    //             toast.success(response.data.message);
-    //             // console.log("userId stored in localStorage:", localStorage.getItem('userId'));
-    //             // console.log(response.data.data.accesstoken);
-               
-    //             // Storing tokens and user ID in localStorage
-    //             localStorage.setItem('accessToken', response.data.data.accessToken);
-    //             localStorage.setItem('refreshToken', response.data.data.refreshToken);
-    //             localStorage.setItem('userId', response.data.data.userId); // Save userId
-
-    //             // Fetch user details
-    //             const userDetails = await fetchUserDetails();
-    //             dispatch(setUserDetails(userDetails.data));
-
-    //             setData({ email: "", password: "" });
-
-    //             navigate("/");
-
-    //         }
-    //     } catch (error) {
-    //         AxiosToastError(error);
-    //     }
-    // };
-// const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setError("");
-
-//     if (!validateEmail(data.email)) {
-//         setError('Please enter a valid email address.');
-//         return;
-//     }
-
-//     if (data.password.length < 6) {
-//         setError('Password must be at least 6 characters long.');
-//         return;
-//     }
-    
-//     console.log("🔹 Data sent to backend:", data); 
-//     try {
-//         const response = await Axios({
-//             ...SummaryApi.login,
-//             data: data
-//         });
-//         console.log("🔹 API Response:", response.data);
-        
-//         if (response.data.error) {
-//             toast.error(response.data.message);
-//             return;
-//         }
-
-//         if (response.data.success) {
-//             toast.success(response.data.message);
-            
-//             // Storing tokens and user ID in localStorage
-//             localStorage.setItem('accessToken', response.data.data.accessToken);
-//             localStorage.setItem('refreshToken', response.data.data.refreshToken);
-//             localStorage.setItem('userId', response.data.data.userId); // Save userId
-
-//             // Fetch user details and update redux store
-//             const userDetails = await fetchUserDetails();
-//             dispatch(setUserDetails(userDetails.data));
-
-//             setData({ email: "", password: "" });
-
-//             navigate("/"); // Redirect to homepage or dashboard after login
-//         }
-//     } catch (error) {
-//         AxiosToastError(error); // Handle any errors from Axios request
-//     }
-// };
-const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
     if (!validateEmail(data.email)) {
-        setError('Please enter a valid email address.');
-        return;
+      setError('Please enter a valid email address.');
+      return;
     }
 
     if (data.password.length < 6) {
-        setError('Password must be at least 6 characters long.');
-        return;
+      setError('Password must be at least 6 characters long.');
+      return;
     }
 
-    console.log("🔹 Data sent to backend:", data);
     try {
-        const response = await Axios({
-            ...SummaryApi.login,
-            data: data
+      console.log('Sending login data:', data);
+      const response = await Axios({
+        ...SummaryApi.login,
+        data: data
+      });
+
+      console.log('API Response:', response.data);
+
+      if (response.data.error) {
+        toast.error(response.data.message);
+        return;
+      }
+
+      if (response.data.success) {
+        toast.success(response.data.message);
+
+        // Debug response userId and tokens
+        console.log('Login success, data:', response.data.data);
+
+        // Store tokens and userId in localStorage
+        localStorage.setItem('accessToken', response.data.data.accessToken);
+        localStorage.setItem('refreshToken', response.data.data.refreshToken);
+        localStorage.setItem('userId', response.data.data.userId);
+
+        // Debug after setting localStorage
+        console.log('LocalStorage userId:', localStorage.getItem('userId'));
+        localStorage.setItem('userId', response.data.data.userId);
+        // Set cookie for userId (for example usage or backend reading)
+        Cookies.set('userId', response.data.data.userId, {
+          expires: 7,
+          sameSite: 'Lax',
+          secure: false, // IMPORTANT: false for local testing HTTP
         });
-        console.log("🔹 API Response:", response.data);
 
-        if (response.data.error) {
-            toast.error(response.data.message);
-            return;
-        }
+        // Debug cookie value right after set
+        console.log('Cookie userId:', Cookies.get('userId'));
 
-        if (response.data.success) {
-            toast.success(response.data.message);
+        // Fetch user details and update redux store
+        const userDetails = await fetchUserDetails();
+        dispatch(setUserDetails(userDetails.data));
 
-            // Storing tokens and user ID in localStorage
-            
-            localStorage.setItem('accessToken', response.data.data.accessToken);
-            localStorage.setItem('refreshToken', response.data.data.refreshToken);
-            localStorage.setItem('userId', response.data.data.userId); // Save userId
+        setData({ email: "", password: "" });
 
-            // Fetch user details and update redux store
-            const userDetails = await fetchUserDetails(); // Fetch user details using the access token
-            dispatch(setUserDetails(userDetails.data));
-
-            setData({ email: "", password: "" });
-
-            navigate("/"); // Redirect to homepage or dashboard after login
-        }
+        // Navigate to homepage or dashboard
+        navigate("/");
+      }
     } catch (error) {
-        AxiosToastError(error); // Handle any errors from Axios request
+      console.error('Login error:', error);
+      AxiosToastError(error);
     }
-};
+  };
 
-    return (
-        <div className="login-container">
-            <div className="login-box">
-                <div className="login-image">
-                    <img src={defaultImage} alt="Illustration" />
+  return (
+    <div className="login-container">
+      <div className="login-bg-left" />
+      <div className="login-bg-right" />
+      <div className="login-content">
+        <div className="login-box">
+          <div className="login-image">
+            <img src={defaultImage} alt="Illustration" />
+          </div>
+          <div className="login-form-container">
+            <h1 className="login-title">Farm To Spoon</h1>
+            <form onSubmit={handleSubmit} className="login-form">
+              <div>
+                <label htmlFor="email" className="input-label">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={data.email}
+                  onChange={handleChange}
+                  required
+                  className="input-field"
+                />
+              </div>
+              <div className="mt-4">
+                <label htmlFor="password" className="input-label">Password</label>
+                <div className="password-container">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    id="password"
+                    name="password"
+                    value={data.password}
+                    onChange={handleChange}
+                    required
+                    className="input-field"
+                  />
+                  <div onClick={() => setShowPassword(prev => !prev)} className="password-toggle">
+                    {showPassword ? <FaRegEye /> : <FaRegEyeSlash />}
+                  </div>
                 </div>
-                <div className="login-form-container">
-                    <h1 className="login-title">Farm To Spoon</h1>
-                    <form onSubmit={handleSubmit} className="login-form">
-                        <div>
-                            <label htmlFor="email" className="input-label">Email</label>
-                            <input
-                                type="email"
-                                id="email"
-                                name="email"
-                                value={data.email}
-                                onChange={handleChange}
-                                required
-                                className="input-field"
-                            />
-                        </div>
-                        <div className="mt-4">
-                            <label htmlFor="password" className="input-label">Password</label>
-                            <div className="password-container">
-                                <input
-                                    type={showPassword ? "text" : "password"}
-                                    id="password"
-                                    name="password"
-                                    value={data.password}
-                                    onChange={handleChange}
-                                    required
-                                    className="input-field"
-                                />
-                                <div onClick={() => setShowPassword(prev => !prev)} className="password-toggle">
-                                    {showPassword ? <FaRegEye /> : <FaRegEyeSlash />}
-                                </div>
-                            </div>
-                        </div>
-                        {error && <div className="error-message">{error}</div>}
-                        <div className="mt-4 flex justify-between">
-                            <Link to="/forgot-password" className="forgot-password">Forgot password?</Link>
-                        </div>
-                        <button type="submit" className="login-button">
-                            Sign In
-                        </button>
-                    </form>
-                    <div className="signup-link">
-                        <p>Don't have an account? <Link to="/register">Sign up</Link></p>
-                    </div>
-                </div>
+              </div>
+              {error && <div className="error-message">{error}</div>}
+              <div className="mt-4 flex justify-between">
+                <Link to="/forgot-password" className="forgot-password">Forgot password?</Link>
+              </div>
+              <button type="submit" className="login-button">
+                Sign In
+              </button>
+            </form>
+            <div className="signup-link">
+              <p>Don't have an account? <Link to="/register">Sign up</Link></p>
             </div>
+          </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default Login;

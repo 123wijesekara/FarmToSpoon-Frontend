@@ -34,10 +34,13 @@ const EditProductAdmin = ({ close ,data : propsData,fetchProductData}) => {
   const [selectCategory, setSelectCategory] = useState("")
   const [selectSubCategory, setSelectSubCategory] = useState("")
   const allSubCategory = useSelector(state => state.product.allSubCategory)
-
+  const [userId, setUserId] = useState(null); 
   const [openAddField, setOpenAddField] = useState(false)
   const [fieldName, setFieldName] = useState("")
-
+  useEffect(() => {
+    const userId = localStorage.getItem("userId");   
+    setUserId(userId);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -112,22 +115,25 @@ const EditProductAdmin = ({ close ,data : propsData,fetchProductData}) => {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    console.log("data", data)
-
+    e.preventDefault();
+  
+    if (!userId) {
+      alert("User ID is missing. Please log in again.");
+      return;
+    }
+  
     try {
       const response = await Axios({
         ...SummaryApi.updateProductDetails,
-        data: data
-      })
-      const { data: responseData } = response
-
+        data: { ...data, userId },  
+      });
+  
+      const { data: responseData } = response;
+  
       if (responseData.success) {
-        successAlert(responseData.message)
-        if(close){
-          close()
-        }
-        fetchProductData()
+        successAlert(responseData.message);
+        if (close) close();
+        fetchProductData();
         setData({
           name: "",
           image: [],
@@ -139,15 +145,13 @@ const EditProductAdmin = ({ close ,data : propsData,fetchProductData}) => {
           discount: "",
           description: "",
           more_details: {},
-        })
-
+        });
       }
     } catch (error) {
-      AxiosToastError(error)
+      AxiosToastError(error);
     }
-
-
-  }
+  };
+  
 
   return (
     <section className='fixed top-0 right-0 left-0 bottom-0 bg-black z-50 bg-opacity-70 p-4'>

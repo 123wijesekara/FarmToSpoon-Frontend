@@ -6,21 +6,28 @@ import SummaryApi from '../common/SummaryApi'
 import Axios from '../utils/Axios'
 import AxiosToastError from '../utils/AxiosToastError'
 import toast from 'react-hot-toast'
-
+ 
 const ProductCardAdmin = ({ data, fetchProductData }) => {
   const [editOpen,setEditOpen]= useState(false)
   const [openDelete,setOpenDelete] = useState(false)
-
+  
   const handleDeleteCancel  = ()=>{
       setOpenDelete(false)
   }
+ 
 
   const handleDelete = async()=>{
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      toast.error("User ID not found. Please log in again.");
+      return;
+    }
     try {
       const response = await Axios({
         ...SummaryApi.deleteProduct,
         data : {
-          _id : data._id
+          _id : data._id,
+          userId: data.userId
         }
       })
 
