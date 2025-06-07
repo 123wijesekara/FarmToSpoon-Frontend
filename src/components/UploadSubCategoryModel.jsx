@@ -180,7 +180,7 @@ const UploadSubCategoryModel = ({close, fetchData}) => {
 
                     <button
                         className={`px-4 py-2 border
-                            ${subCategoryData?.name && subCategoryData?.image && subCategoryData?.category[0] ? "bg-primary-200 hover:bg-primary-100" : "bg-gray-200"}    
+                            ${subCategoryData?.name && subCategoryData?.image && subCategoryData?.category[0] ? "bg-green-200 hover:bg-green-100" : "bg-gray-200"}    
                             font-semibold
                         `}
                     >
