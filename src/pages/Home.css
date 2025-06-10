@@ -149,3 +149,12 @@
     height: 100%;
     object-fit: scale-down;
   }
+
+
+  .home-search-input {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    width: 250px;
+  }
+  

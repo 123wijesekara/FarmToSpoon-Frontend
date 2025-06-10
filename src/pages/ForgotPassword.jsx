@@ -137,8 +137,9 @@ const handleSubmit = async (e) => {
         const response = await Axios({
             ...SummaryApi.forgot_password,
             data: data
+             
         });
-     
+       
 
         if (response.data.error) {
             toast.error(response.data.message);

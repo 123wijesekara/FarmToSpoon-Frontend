@@ -152,7 +152,29 @@ const SummaryApi = {
     getOrderItems : {
         url : '/api/order/order-list',
         method : 'get'
-    }
+    },
+    getUserOrders: {
+        url: '/api/order/getFarmerOrdersController',
+        method: 'get'
+      },
+      getBuyerOrders: {
+        url: '/api/order/updateBuyerOrderStatus',
+        method: 'get'
+      },
+      getUnreadBuyerNotifications: {
+        method: 'GET',
+        url: '/api/order/getUnreadBuyerNotifications'
+      },
+      markNotificationsRead: {
+        method: 'PUT',
+        url: '/api/order/markNotificationsRead'
+      },
+      updateOrderStatus: {
+        method: 'PUT',
+        url: '/api/order/updateOrderStatus'
+      }
+      
+      
 }
 
 export default SummaryApi

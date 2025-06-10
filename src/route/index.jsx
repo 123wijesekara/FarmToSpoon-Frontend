@@ -24,6 +24,9 @@ import CheckoutPage from "../pages/CheckoutPage";
 import Success from "../pages/Success";
 import Cancel from "../pages/Cancel";
 import HomePage from "../pages/HomePage";
+import UserOrders from "../pages/UserOrders";
+import FarmerOrders from "../pages/UserOrders";
+import BuyerOrders from "../pages/BuyerOrders";
 
 const router = createBrowserRouter([
     {
@@ -128,7 +131,18 @@ const router = createBrowserRouter([
             {
                 path : 'cancel',
                 element : <Cancel/>
+            },
+
+            {
+                path:'/orders',
+                element : <FarmerOrders/>
+            },
+            {
+                path:'/my-orders',
+                element:<BuyerOrders/>
             }
+
+
         ]
     }
 ])

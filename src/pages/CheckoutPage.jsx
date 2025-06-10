@@ -27,6 +27,7 @@ const CheckoutPage = () => {
               addressId : addressList[selectAddress]?._id,
               subTotalAmt : totalPrice,
               totalAmt :  totalPrice,
+            
             }
           })
 
@@ -65,6 +66,7 @@ const CheckoutPage = () => {
               addressId : addressList[selectAddress]?._id,
               subTotalAmt : totalPrice,
               totalAmt :  totalPrice,
+              
             }
         })
 

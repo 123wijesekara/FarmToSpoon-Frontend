@@ -232,7 +232,7 @@ import { useSelector } from 'react-redux';
 import { valideURLConvert } from '../utils/valideURLConvert';
 import AxiosToastError from '../utils/AxiosToastError';
 
-const CategoryWiseProductDisplay = ({ id, name, sortBy = 'createdAt', sortOrder = 'desc', district = '' }) => {
+const CategoryWiseProductDisplay = ({ id, name, sortBy = 'createdAt', sortOrder = 'desc', district = '',searchTerm = '' }) => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const containerRef = useRef();
@@ -249,6 +249,8 @@ const CategoryWiseProductDisplay = ({ id, name, sortBy = 'createdAt', sortOrder 
                     sortBy,
                     sortOrder,
                     district,
+                   searchTerm
+                    
                 },
             });
 
@@ -265,7 +267,7 @@ const CategoryWiseProductDisplay = ({ id, name, sortBy = 'createdAt', sortOrder 
 
     useEffect(() => {
         fetchCategoryWiseProduct();
-    }, [id, sortBy, sortOrder, district]); // React to changes
+    }, [id, sortBy, sortOrder, district,searchTerm]);  
 
     const handleScroll = (direction) => {
         if (!containerRef.current) return;
