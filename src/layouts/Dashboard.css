@@ -40,12 +40,12 @@
   .menu-container {
     padding-top: 1rem;
     position: sticky;
-    top: 6rem;  /* Adjust based on your top space */
+    top: 6rem;   
     max-height: calc(100vh - 96px);  /* Adjust to fit within the viewport */
     overflow-y: auto;
     display: none;
     border-right: 1px solid #e0e0e0;
-    margin-left:-16px;  /* Adjust border as per your design */
+    margin-left:-16px;  
   }
   
   .menu-container-lg {

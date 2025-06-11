@@ -215,7 +215,7 @@ const EditProductAdmin = ({ close ,data : propsData,fetchProductData}) => {
                       onChange={handleUploadImage}
                     />
                   </label>
-                  {/**display uploded image*/}
+                
                   <div className='flex flex-wrap gap-4'>
                     {
                       data.image.map((img, index) => {

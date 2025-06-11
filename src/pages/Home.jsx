@@ -148,10 +148,10 @@ const Home = () => {
           <img src={bannerMobile} className="home-banner-image lg:hidden" alt="banner" />
         </div>
 
-        {/* Sorting and Filtering Controls */}
+      
         <div className="home-filter-container">
 
-          {/* Sort Buttons */}
+           
           <div className="flex items-center gap-4">
             <p className="text-gray-600">Sort by:</p>
             <button
@@ -168,7 +168,7 @@ const Home = () => {
             </button>
           </div>
 
-          {/* District Dropdown */}
+        
           <div className="relative">
             <button
               onClick={() => setShowDistrictDropdown(!showDistrictDropdown)}
@@ -193,7 +193,7 @@ const Home = () => {
               </div>
             )}
 
-            {/* Search Input */}
+           
 {selectedDistrict && (
   <div className="flex items-center gap-4 mt-4">
     <input
@@ -211,7 +211,7 @@ const Home = () => {
        
         </div>
 
-        {/* Categories */}
+       
         <div className="home-category-grid">
           {loadingCategory ? (
             new Array(12).fill(null).map((_, index) => (
@@ -233,7 +233,7 @@ const Home = () => {
           )}
         </div>
 
-        {/* Category-wise Products */}
+      
         {categoryData?.map((c) => (
           <CategoryWiseProductDisplay
             key={c?._id + "CategorywiseProduct"}
@@ -242,7 +242,7 @@ const Home = () => {
             sortBy={sortBy}
             sortOrder={sortOrder}
             district={selectedDistrict}
-            searchTerm={searchTerm} // <-- 🔍 Pass searchTerm
+            searchTerm={searchTerm}  
           />
         ))}
       </div>
