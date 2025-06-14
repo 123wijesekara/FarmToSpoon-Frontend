@@ -486,19 +486,19 @@ const FarmerOrders = () => {
                                                     <div className="flex items-center gap-2">
                                                         <FaUser className="w-4 h-4 text-gray-400" />
                                                         <span className="text-sm text-gray-500">Name:</span>
-                                                            {order.name}
+                                                            {order.userName}
                                                        
                                                     </div>
                                                     <div className="flex items-center gap-2">
                                                     <FaUser className="w-4 h-4 text-gray-400" />
                                                         <span className="text-sm text-gray-500">Email:</span>
-                                                        {/* <span className="text-sm">{order.customer_details.email}</span> */}
+                                                        {order.Email}
                                                     </div>
                                                     {
                                                         <div className="flex items-center gap-2">
                                                             <FaPhone className="w-4 h-4 text-gray-400" />
                                                             <span className="text-sm text-gray-500">Contact no:</span>
-                                                            {/* <span className="text-sm">{order.customer_details.mobile}</span> */}
+                                                      {order.PhoneNo}
                                                         </div>
                                                     }
                                                 </div>

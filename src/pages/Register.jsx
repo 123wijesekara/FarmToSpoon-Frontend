@@ -10,7 +10,20 @@ import '../pages/Register.css';
 import logo from '../assets/logof.png';  
 import defaultImage from '../assets/default.png';  
 
+
+const validateEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+};
+
+const validatePassword = (password) => {
+    const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+    return regex.test(password);
+};
+
+
 const Register = () => {
+    //console.log ("phone",phone);
     const [data, setData] = useState({
         name: "",
         email: "",
@@ -34,15 +47,25 @@ const Register = () => {
         });
     };
 
-    const valideValue = Object.values(data).every((el) => el);
+  //  const valideValue = Object.values(data).every((el) => el);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
+if(!validateEmail(data.email)){
+    toast.error("Please enter valid email address");
+    return;
+}
 
-        if (data.password !== data.confirmPassword) {
-            toast.error("Password and confirm password must be the same");
-            return;
-        }
+if(!validatePassword(data.password)){
+    toast.error("Please must be at least 6 characters and inlcude at least letter, number, and special character")
+    return;
+}
+if (data.password !== data.confirmPassword) {
+    toast.error("Password and confirm password must be the same.");
+    return;
+}
+       
 
         try {
             const response = await Axios({
@@ -181,8 +204,8 @@ const Register = () => {
 
                     <button
                         type="submit"
-                        disabled={!valideValue}
-                        className={`register-button ${valideValue ? "" : "disabled"}`}
+                        disabled={handleSubmit}
+                        className={`register-button ${handleSubmit ? "" : "disabled"}`}
                     >
                         Register
                     </button>
