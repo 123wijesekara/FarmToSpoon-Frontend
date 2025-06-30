@@ -14,6 +14,7 @@ import { handleAddItemCart } from './store/cartProduct'
 import GlobalProvider from './provider/GlobalProvider';
 import { FaCartShopping } from "react-icons/fa6";
 import CartMobileLink from './components/CartMobile';
+ 
 
 function App() {
   const dispatch = useDispatch()
@@ -69,6 +70,7 @@ function App() {
   },[])
 
   return (
+   
     <GlobalProvider> 
       <Header/>
       <main className='min-h-[78vh]'>
@@ -82,6 +84,7 @@ function App() {
         )
       }
     </GlobalProvider>
+     
   )
 }
 
