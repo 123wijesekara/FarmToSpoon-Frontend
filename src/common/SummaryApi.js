@@ -9,6 +9,11 @@ const SummaryApi = {
         url : '/api/user/login',
         method : 'post'
     },
+    verify_email: {
+        url: '/api/user/verify-email',
+        method: 'post'
+      },
+      
     forgot_password : {
         url : "/api/user/forgot-password",
         method : 'put'
@@ -145,10 +150,10 @@ const SummaryApi = {
         url : "/api/order/cash-on-delivery",
         method : 'post'
     },
-    payment_url : {
-        url : "/api/order/checkout",
-        method : 'post'
-    },
+    // payment_url : {
+    //     url : "/api/order/checkout",
+    //     method : 'post'
+    // },
     getOrderItems : {
         url : '/api/order/order-list',
         method : 'get'

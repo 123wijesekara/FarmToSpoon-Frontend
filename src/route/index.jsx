@@ -27,6 +27,7 @@ import HomePage from "../pages/HomePage";
 import UserOrders from "../pages/UserOrders";
 import FarmerOrders from "../pages/UserOrders";
 import BuyerOrders from "../pages/BuyerOrders";
+import VerifyEmail from "../pages/VerifyEmail";
 
 const router = createBrowserRouter([
     {
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
             {
                 path : "register",
                 element : <Register/>
+            },
+            {
+                path:"verify-email",
+                element:<VerifyEmail/>
             },
             {
                 path : "forgot-password",

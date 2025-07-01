@@ -88,7 +88,7 @@ if (data.password !== data.confirmPassword) {
                     district: "",
                     role: "USER",
                 });
-                navigate("/login");
+                navigate("/verify-email");
             }
         } catch (error) {
             AxiosToastError(error);
