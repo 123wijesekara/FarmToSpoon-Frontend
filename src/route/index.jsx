@@ -28,6 +28,8 @@ import UserOrders from "../pages/UserOrders";
 import FarmerOrders from "../pages/UserOrders";
 import BuyerOrders from "../pages/BuyerOrders";
 import VerifyEmail from "../pages/VerifyEmail";
+import StockManagement from "../components/StockManagement";
+import RatingForm from "../components/RatingForm";
 
 const router = createBrowserRouter([
     {
@@ -105,7 +107,13 @@ const router = createBrowserRouter([
                     {
                         path : 'product',
                         element : <AdminPermision><ProductAdmin/></AdminPermision>
+                    },
+                    {
+                        path : 'Stockmanage',
+                        element : <AdminPermision><StockManagement/></AdminPermision>
                     }
+
+                     
                 ]
             },
             {
@@ -145,8 +153,11 @@ const router = createBrowserRouter([
             {
                 path:'/my-orders',
                 element:<BuyerOrders/>
-            }
-
+            },
+{
+path:'/ratings',
+element:<RatingForm/>
+}
 
         ]
     }

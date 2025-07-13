@@ -189,7 +189,7 @@ const DisplayCartItem = ({ close }) => {
                                         </div>
                                         <div className='cart-item-details'>
                                             <p className='line-clamp-2'>{item?.productId?.name}</p>
-                                            <p className='text-neutral-400'>{item?.quantity}</p>
+                                     
                                             <p className='text-neutral-400'>{item?.productId?.userName}</p>
                                             <p className='text-neutral-400'>{item?.productId?.mobile}</p>
                                             <p className='font-semibold'>{DisplayPriceInRupees(pricewithDiscount(item?.productId?.price, item?.productId?.discount))}</p>

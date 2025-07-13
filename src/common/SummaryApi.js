@@ -1,5 +1,6 @@
 export const baseURL = 'http://localhost:8080'
 // export const baseURL = import.meta.env.VITE_API_URL
+
 const SummaryApi = {
     register : {
         url : '/api/user/register',
@@ -13,7 +14,7 @@ const SummaryApi = {
         url: '/api/user/verify-email',
         method: 'post'
       },
-      
+
     forgot_password : {
         url : "/api/user/forgot-password",
         method : 'put'
@@ -177,9 +178,17 @@ const SummaryApi = {
       updateOrderStatus: {
         method: 'PUT',
         url: '/api/order/updateOrderStatus'
-      }
+      }, 
+      getAllProducts: {
+        method: 'POST',
+        url: "/api/product/getAllProducts",
+     
+      },
       
-      
+      submitRating: {
+        url: "/api/ratings",
+        method: "post",
+      },
 }
 
 export default SummaryApi
