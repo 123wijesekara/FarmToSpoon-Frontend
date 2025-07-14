@@ -186,7 +186,7 @@ const SummaryApi = {
       },
       
       submitRating: {
-        url: "/api/ratings",
+        url: "/api/ratings/ratings",
         method: "post",
       },
 }
