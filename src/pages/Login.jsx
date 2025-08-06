@@ -347,6 +347,7 @@ const Login = () => {
         localStorage.setItem('accessToken', response.data.data.accessToken);
         localStorage.setItem('refreshToken', response.data.data.refreshToken);
         localStorage.setItem('userId', response.data.data.userId);
+        localStorage.setItem('username',response.data.data.name)
 
         // Debug after setting localStorage
         console.log('LocalStorage userId:', localStorage.getItem('userId'));

@@ -590,17 +590,18 @@ const UploadProduct = () => {
     // Retrieve userId from localStorage
     
     const userId = localStorage.getItem("userId");
+    const username= localStorage.getItem("username");
     if (!userId) {
       alert("User ID is missing or invalid. Please log in again.");
     
-      return; // Prevent form submission if userId is not available
+      return;  
     }
   
     try {
-      // Include userId in the data object sent to the backend
+      console.log("Submitting product data:", { ...data, userId, username });
       const response = await Axios({
         ...SummaryApi.createProduct,
-        data: { ...data, userId }, // Adding userId to the data
+        data: { ...data, userId,username},  
       });
       const { data: responseData } = response;
   

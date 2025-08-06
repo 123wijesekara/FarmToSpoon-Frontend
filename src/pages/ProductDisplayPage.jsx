@@ -14,8 +14,8 @@ import AddToCartButton from '../components/AddToCartButton'
 
 const ProductDisplayPage = () => {
   const params = useParams();
-  let productId = params?.product?.split("-")?.slice(-1)[0]; // Extracting product ID from URL
-  let userId = params?.product?.split("-")?.slice(-1)[0]; // Extracting product ID from URL
+  let productId = params?.product?.split("-")?.slice(-1)[0];  
+  let userId = params?.product?.split("-")?.slice(-1)[0]; 
 
   const [data, setData] = useState({
     name: "",
@@ -26,6 +26,8 @@ const ProductDisplayPage = () => {
     discount: 0,
     stock: 0,
     more_details: {},
+    avgRating: 0,
+    ratingCount: 0,
   });
   
   const [image, setImage] = useState(0);
@@ -35,14 +37,13 @@ const ProductDisplayPage = () => {
   // Fetch product details from API
   const fetchProductDetails = async () => {
     try {
-      setLoading(true); // Start loading
+      setLoading(true);
        
-      
       const response = await Axios({
         ...SummaryApi.getProductDetails,
         data: {
           productId: productId,
-          userId: userId, // You can dynamically set this
+          userId: userId, // Adjust userId logic if needed
         },
       });
 
@@ -56,7 +57,7 @@ const ProductDisplayPage = () => {
     } catch (error) {
       AxiosToastError(error);
     } finally {
-      setLoading(false); // End loading
+      setLoading(false);
     }
   };
 
@@ -74,11 +75,12 @@ const ProductDisplayPage = () => {
 
   return (
     <section className='container mx-auto p-4 grid lg:grid-cols-2'>
-      <div className=''>
+      <div>
         <div className='bg-white lg:min-h-[65vh] lg:max-h-[65vh] rounded min-h-56 max-h-56 h-full w-full'>
           <img
             src={data.image[image]}
             className='w-full h-full object-scale-down'
+            alt={data.name}
           />
         </div>
 
@@ -94,7 +96,7 @@ const ProductDisplayPage = () => {
         <div className='grid relative'>
           <div ref={imageContainer} className='flex gap-4 z-10 relative w-full overflow-x-auto scrollbar-none'>
             {data.image.map((img, index) => (
-              <div className='w-20 h-20 min-h-20 min-w-20 scr cursor-pointer shadow-md' key={img + index}>
+              <div className='w-20 h-20 min-h-20 min-w-20 cursor-pointer shadow-md' key={img + index}>
                 <img
                   src={img}
                   alt='min-product'
@@ -135,7 +137,27 @@ const ProductDisplayPage = () => {
 
       <div className='p-4 lg:pl-7 text-base lg:text-lg'>
         <p className='bg-green-300 w-fit px-2 rounded-full'>10 Min</p>
+
+        {/* Name + Rating Stars */}
+        <div className='mb-1'>
         <h2 className='text-lg font-semibold lg:text-3xl'>{data.name}</h2>
+
+          {data.avgRating > 0 && (
+            <div className='flex items-center gap-1'>
+              <div className='flex text-yellow-500 text-3xl'>
+                {[...Array(5)].map((_, i) => (
+                  <span key={i}>
+                    {i < Math.round(data.avgRating) ? '★' : '☆'}
+                  </span>
+                ))}
+              </div>
+              <span className='text-sm text-gray-600 ml-1'>
+                ({data.avgRating.toFixed(1)} / {data.ratingCount} ratings)
+              </span>
+            </div>
+          )}
+        </div>
+
         <p>{data.unit}</p>
         <Divider />
         <div>
@@ -163,36 +185,33 @@ const ProductDisplayPage = () => {
           </div>
         )}
 
-<h2 className='font-semibold'>Why Shop from Farm To Spoon?</h2>
-<div>
-  
-  <div className='flex items-center gap-4 my-4'>
-    <img src={image1} alt='Fresh & Organic Produce' className='w-20 h-20' />
-    <div className='text-sm'>
-      <div className='font-semibold'>Fresh & Organic Produce</div>
-      <p>Enjoy high-quality, fresh, and organic produce, directly sourced from trusted local farms, ensuring maximum flavor and nutrition.</p>
-    </div>
-  </div>
+        <h2 className='font-semibold'>Why Shop from Farm To Spoon?</h2>
+        <div>
+          <div className='flex items-center gap-4 my-4'>
+            <img src={image1} alt='Fresh & Organic Produce' className='w-20 h-20' />
+            <div className='text-sm'>
+              <div className='font-semibold'>Fresh & Organic Produce</div>
+              <p>Enjoy high-quality, fresh, and organic produce, directly sourced from trusted local farms, ensuring maximum flavor and nutrition.</p>
+            </div>
+          </div>
 
-  <div className='flex items-center gap-4 my-4'>
-    <img src={image2} alt='Fair Market Prices' className='w-20 h-20' />
-    <div className='text-sm'>
-      <div className='font-semibold'>Fair Market Prices</div>
-      <p>Benefit from fair prices for both farmers and consumers, eliminating intermediaries and ensuring value for money.</p>
-    </div>
-  </div>
+          <div className='flex items-center gap-4 my-4'>
+            <img src={image2} alt='Fair Market Prices' className='w-20 h-20' />
+            <div className='text-sm'>
+              <div className='font-semibold'>Fair Market Prices</div>
+              <p>Benefit from fair prices for both farmers and consumers, eliminating intermediaries and ensuring value for money.</p>
+            </div>
+          </div>
 
-  
-
-  <div className='flex items-center gap-4 my-4'>
-    <img src={image3} alt='Quick and Easy Access' className='w-20 h-20' />
-    <div className='text-sm'>
-      <div className='font-semibold'>Quick and Easy Access</div>
-      <p>Enjoy the convenience of accessing fresh, locally grown products with just a few clicks, delivered directly to your doorstep or available at nearby pickup points.</p>
-    </div>
-  </div>
-</div>
-</div>
+          <div className='flex items-center gap-4 my-4'>
+            <img src={image3} alt='Quick and Easy Access' className='w-20 h-20' />
+            <div className='text-sm'>
+              <div className='font-semibold'>Quick and Easy Access</div>
+              <p>Enjoy the convenience of accessing fresh, locally grown products with just a few clicks, delivered directly to your doorstep or available at nearby pickup points.</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   );
 };

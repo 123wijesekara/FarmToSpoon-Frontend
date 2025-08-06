@@ -232,6 +232,7 @@ import { useSelector } from 'react-redux';
 import { valideURLConvert } from '../utils/valideURLConvert';
 import AxiosToastError from '../utils/AxiosToastError';
 
+
 const CategoryWiseProductDisplay = ({ id, name, sortBy = 'createdAt', sortOrder = 'desc', district = '',searchTerm = '' }) => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -245,7 +246,7 @@ const CategoryWiseProductDisplay = ({ id, name, sortBy = 'createdAt', sortOrder 
             const response = await Axios({
                 ...SummaryApi.getProductByCategory,
                 data: {
-                    id,
+                    id:id,
                     sortBy,
                     sortOrder,
                     district,
@@ -271,18 +272,25 @@ const CategoryWiseProductDisplay = ({ id, name, sortBy = 'createdAt', sortOrder 
 
     const handleScroll = (direction) => {
         if (!containerRef.current) return;
-        const scrollAmount = 200;
+        const scrollAmount = 500;
         containerRef.current.scrollLeft += direction === 'right' ? scrollAmount : -scrollAmount;
     };
 
     const getRedirectURL = () => {
         const subcategory = subCategoryData.find(sub =>
-            sub.category.some(c => c._id === id)
+            sub.category.some(c => c.id === id)
         );
+ 
+ console.log("Subcategory Data:", subCategoryData);
 
-        if (!subcategory) return '#';
+        if (!subcategory)  
+            return console.error("Subcategory not found for category ID:",subcategory);
+         
 
+         
+     
         return `/${valideURLConvert(name)}-${id}/${valideURLConvert(subcategory.name)}-${subcategory._id}`;
+        
     };
 
     return (

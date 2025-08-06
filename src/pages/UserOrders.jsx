@@ -498,7 +498,7 @@ const FarmerOrders = () => {
                                                         <div className="flex items-center gap-2">
                                                             <FaPhone className="w-4 h-4 text-gray-400" />
                                                             <span className="text-sm text-gray-500">Contact no:</span>
-                                                      {order.PhoneNo}
+                                                      {order.mobile}
                                                         </div>
                                                     }
                                                 </div>
