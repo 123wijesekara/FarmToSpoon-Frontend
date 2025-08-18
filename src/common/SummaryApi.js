@@ -157,7 +157,7 @@ const SummaryApi = {
     // },
     getOrderItems : {
         url : '/api/order/order-list',
-        method : 'get'
+        method : 'post'
     },
     getUserOrders: {
         url: '/api/order/getFarmerOrdersController',
@@ -184,11 +184,20 @@ const SummaryApi = {
         url: "/api/product/getAllProducts",
      
       },
-      
+      getAllFarmers: {
+        method: 'get',
+        url: "/api/user/get-all-farmers",
+     
+      },
       submitRating: {
         url: "/api/ratings/ratings",
         method: "post",
       },
+
+      getFarmerById: { url: "/api/user/farmer/:id", method: "post" },
+      deleteFarmer: { url: "/api/user/farmer/:id", method: "delete" },
+      suspendFarmer: { url: "/api/user/farmer/suspend/:id", method: "patch" },
+      
 }
 
 export default SummaryApi

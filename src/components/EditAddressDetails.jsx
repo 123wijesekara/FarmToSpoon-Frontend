@@ -14,9 +14,6 @@ const EditAddressDetails = ({close, data}) => {
             userId : data.userId,
             address_line :data.address_line,
             city : data.city,
-            state : data.state,
-            country : data.country,
-            pincode : data.pincode,
             mobile : data.mobile 
         }
     })
@@ -30,9 +27,7 @@ const EditAddressDetails = ({close, data}) => {
                     ...data,
                     address_line :data.address_line,
                     city : data.city,
-                    state : data.state,
-                    country : data.country,
-                    pincode : data.pincode,
+                   
                     mobile : data.mobile
                 }
             })
@@ -79,33 +74,9 @@ const EditAddressDetails = ({close, data}) => {
                         {...register("city",{required : true})}
                     />
                 </div>
-                <div className='grid gap-1'>
-                    <label htmlFor='state'>State :</label>
-                    <input
-                        type='text'
-                        id='state' 
-                        className='border bg-blue-50 p-2 rounded'
-                        {...register("state",{required : true})}
-                    />
-                </div>
-                <div className='grid gap-1'>
-                    <label htmlFor='pincode'>Pincode :</label>
-                    <input
-                        type='text'
-                        id='pincode' 
-                        className='border bg-blue-50 p-2 rounded'
-                        {...register("pincode",{required : true})}
-                    />
-                </div>
-                <div className='grid gap-1'>
-                    <label htmlFor='country'>Country :</label>
-                    <input
-                        type='text'
-                        id='country' 
-                        className='border bg-blue-50 p-2 rounded'
-                        {...register("country",{required : true})}
-                    />
-                </div>
+               
+               
+                
                 <div className='grid gap-1'>
                     <label htmlFor='mobile'>Mobile No. :</label>
                     <input

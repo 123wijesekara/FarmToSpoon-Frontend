@@ -30,6 +30,8 @@ import BuyerOrders from "../pages/BuyerOrders";
 import VerifyEmail from "../pages/VerifyEmail";
 import StockManagement from "../components/StockManagement";
 import RatingForm from "../components/RatingForm";
+import UserManagement from "../pages/UserManage";
+import FarmerDetails from "../pages/FarmerDetailsforAdmin";
 
 const router = createBrowserRouter([
     {
@@ -111,7 +113,12 @@ const router = createBrowserRouter([
                     {
                         path : 'Stockmanage',
                         element : <AdminPermision><StockManagement/></AdminPermision>
+                    },
+                    {
+                        path : 'usermanage',
+                        element : <AdminPermision><UserManagement/></AdminPermision>
                     }
+
 
                      
                 ]
@@ -157,6 +164,10 @@ const router = createBrowserRouter([
 {
 path:'/ratings',
 element:<RatingForm/>
+},
+{
+   path:"/farmer/:id",
+   element:<FarmerDetails /> 
 }
 
         ]

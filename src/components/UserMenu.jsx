@@ -139,6 +139,7 @@ import toast from 'react-hot-toast'
 import AxiosToastError from '../utils/AxiosToastError'
 import { HiOutlineExternalLink } from "react-icons/hi";
 import isFarmer from '../utils/isFarmer'
+import isAdmin from '../utils/isAdmin'
 import './userMenu.css';
 import 'font-awesome/css/font-awesome.min.css';
 
@@ -196,13 +197,13 @@ const UserMenu = ({ close }) => {
       <Divider />
 
       <div className="menu-links">
-        {isFarmer(user.role) && (
+        {isAdmin(user.role) && (
           <Link onClick={handleClose} to="/dashboard/category" className="menu-link">
             <i className="fas fa-folder mr-2"></i> Category
           </Link>
         )}
 
-        {isFarmer(user.role) && (
+        {isAdmin(user.role) && (
           <Link onClick={handleClose} to="/dashboard/subcategory" className="menu-link">
             <i className="fas fa-folder-open mr-2"></i> Sub Category
           </Link>
@@ -224,7 +225,11 @@ const UserMenu = ({ close }) => {
             <i className="fas fa-box mr-2"></i> Product
           </Link>
         )}
-
+{isAdmin(user.role) && (
+          <Link onClick={handleClose} to="/dashboard/usermanage" className="menu-link">
+            <i className="fas fa-user-friends mr-2"></i> Famer Manage
+          </Link>
+        )}
         <Link onClick={handleClose} to="/dashboard/myorders" className="menu-link">
           <i className="fas fa-history mr-2"></i> My Orders
         </Link>

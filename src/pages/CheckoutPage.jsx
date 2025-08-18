@@ -26,6 +26,7 @@ const CheckoutPage = () => {
 
   const handleCashOnDelivery = async () => {
     try {
+      const userId = localStorage.getItem("userId");
       const response = await Axios({
         ...SummaryApi.CashOnDeliveryOrder,
         data: {
@@ -33,6 +34,7 @@ const CheckoutPage = () => {
           addressId: addressList[selectAddress]?._id,
           subTotalAmt: totalPrice,
           totalAmt: totalPrice,
+           userId : userId 
         }
       })
 

@@ -101,7 +101,7 @@ const CategoryPage = () => {
                                     Edit
                                 </button>
                                 <button onClick={()=>{
-                                    setOpenConfirmBoxDeleteDelete(true)
+                                    setOpenConfirmBoxDelete(true)
                                     setDeleteCategory(category)
                                 }} className='flex-1 bg-red-100 hover:bg-red-200 text-red-600 font-medium py-1 rounded'>
                                     Delete

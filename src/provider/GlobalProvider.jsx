@@ -116,20 +116,28 @@ const GlobalProvider = ({children}) => {
           // AxiosToastError(error)
       }
     }
-    const fetchOrder = async()=>{
+    const fetchOrder = async () => {
+      const userId = localStorage.getItem("userId");
+    
       try {
         const response = await Axios({
           ...SummaryApi.getOrderItems,
-        })
-        const { data : responseData } = response
-
-        if(responseData.success){
-            dispatch(setOrder(responseData.data))
+          data: { userId }
+        });
+    
+        const { data: responseData } = response;
+    
+        if (responseData.success) {
+          // responseData.data === orderlist from backend
+          dispatch(setOrder(responseData.data));
+        } else {
+          console.log("Failed to fetch orders:", responseData.message);
         }
       } catch (error) {
-        console.log(error)
+        console.error("Error fetching orders:", error);
       }
-    }
+    };
+    
 
     useEffect(()=>{
       fetchCartItem()

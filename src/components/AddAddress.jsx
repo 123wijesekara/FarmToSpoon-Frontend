@@ -21,9 +21,7 @@ const AddAddress = ({close}) => {
                 data : {
                     address_line :data.addressline,
                     city : data.city,
-                    state : data.state,
-                    country : data.country,
-                    pincode : data.pincode,
+                   
                     mobile : data.mobile
                 }
             })
