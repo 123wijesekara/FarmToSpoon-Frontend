@@ -120,7 +120,7 @@ const EditSubCategory = ({close,data,fetchData}) => {
                                 }
                             </div>
                             <label htmlFor='uploadSubCategoryImage'>
-                                <div className='px-4 py-1 border border-primary-100 text-primary-200 rounded hover:bg-primary-200 hover:text-neutral-900 cursor-pointer  '>
+                                <div className='px-4 py-1  border border-green-200 text-green-600 rounded hover: bg-[#D8F6B6] hover:text-neutral-900 cursor-pointer  '>
                                     Upload Image
                                 </div>
                                 <input 

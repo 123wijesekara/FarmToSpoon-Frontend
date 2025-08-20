@@ -49,7 +49,7 @@ const UserProfileAvatarEdit = ({close}) => {
             <button onClick={close} className='text-neutral-800 w-fit block ml-auto'>
                 <IoClose size={20}/>
             </button>
-            <div className='w-20 h-20 bg-red-500 flex items-center justify-center rounded-full overflow-hidden drop-shadow-sm'>
+ <div className='w-20 h-20 bg-[#D8F6B6] flex items-center justify-center rounded-full overflow-hidden drop-shadow-sm'>
                 {
                     user.avatar ? (
                         <img 
@@ -64,7 +64,7 @@ const UserProfileAvatarEdit = ({close}) => {
             </div>
             <form onSubmit={handleSubmit}>
                 <label htmlFor='uploadProfile'>
-                    <div className='border border-primary-200 cursor-pointer hover:bg-primary-200 px-4 py-1 rounded text-sm my-3'>
+                    <div className='border border-black-200 cursor-pointer hover:bg-[#D8F6B6]  px-4 py-1 rounded text-sm my-3'>
                         {
                             loading ? "Loading..." : "Upload"
                         }

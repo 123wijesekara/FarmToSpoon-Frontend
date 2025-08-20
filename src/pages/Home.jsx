@@ -101,12 +101,13 @@ const Home = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const districts = [
-    'Colombo', 'Gampaha', 'Kalutara', 'Kandy', 'Matale',
-    'Nuwara Eliya', 'Galle', 'Matara', 'Hambantota',
-    'Jaffna', 'Kilinochchi', 'Mannar', 'Vavuniya',
-    'Mullaitivu', 'Batticaloa', 'Ampara', 'Trincomalee',
-    'Kurunegala', 'Puttalam', 'Anuradhapura', 'Polonnaruwa',
-    'Badulla', 'Moneragala', 'Ratnapura', 'Kegalle'
+  "Katubedda",
+    "Rawatawatta",
+    "Egoda Uyana",
+    "Lunawa",
+    "Koralawella",
+    "Ratmalana",
+    "Moratuwa City"
   ];
 
   const handleRedirectProductListpage = (id, cat) => {

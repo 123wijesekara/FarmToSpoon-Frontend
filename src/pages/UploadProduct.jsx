@@ -449,6 +449,15 @@ import Axios from '../utils/Axios';
 import SummaryApi from '../common/SummaryApi';
 import AxiosToastError from '../utils/AxiosToastError';
 import successAlert from '../utils/SuccessAlert';
+const MORATUWA_AREAS = [
+  "Katubedda",
+  "Rawatawatta",
+  "Egoda Uyana",
+  "Lunawa",
+  "Koralawella",
+  "Ratmalana",
+  "Moratuwa City"
+];
 
 const UploadProduct = () => {
   const [data, setData] = useState({
@@ -461,6 +470,7 @@ const UploadProduct = () => {
     price: "",
     discount: "",
     description: "",
+    location: "",
     more_details: {},
   });
 
@@ -618,6 +628,7 @@ const UploadProduct = () => {
           price: "",
           discount: "",
           description: "",
+          location: "",
           more_details: {},
         });
       }
@@ -648,16 +659,19 @@ const UploadProduct = () => {
           </div>
           <div className="grid gap-1">
             <label htmlFor="name" className="font-medium">Location</label>
-            <input
+            <select
               id="location"
-              type="text"
-              placeholder="Enter product selling location"
               name="location"
               value={data.location}
               onChange={handleChange}
               required
               className="bg-blue-50 p-2 outline-none border focus-within:border-primary-200 rounded"
-            />
+            >
+              <option value="">Select product location</option>
+              {MORATUWA_AREAS.map(area => (
+                <option key={area} value={area}>{area}</option>
+              ))}
+            </select>
           </div>
           <div className="grid gap-1">
             <label htmlFor="description" className="font-medium">Description</label>

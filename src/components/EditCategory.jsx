@@ -106,7 +106,7 @@ const EditCategory = ({close, fetchData,data : CategoryData}) => {
                     </div>
                     <label htmlFor='uploadCategoryImage'>
                         <div  className={`
-                        ${!data.name ? "bg-gray-300" : "border-primary-200 hover:bg-primary-100" }  
+                        ${!data.name ? "bg-gray-300" : "bg-white-200 border border-green-200 hover:bg-[#D8F6B6]" }  
                             px-4 py-2 rounded cursor-pointer border font-medium
                         `}>
                             {
@@ -123,7 +123,7 @@ const EditCategory = ({close, fetchData,data : CategoryData}) => {
 
             <button
                 className={`
-                ${data.name && data.image ? "bg-primary-200 hover:bg-primary-100" : "bg-gray-300 "}
+                ${data.name && data.image ? "bg-white-200 border border-green-100 hover:bg-[#D8F6B6] " : "bg-gray-300 "}
                 py-2    
                 font-semibold 
                 `}

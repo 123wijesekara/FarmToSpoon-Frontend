@@ -214,10 +214,15 @@ const UserMenu = ({ close }) => {
             <i className="fas fa-upload mr-2"></i> Upload Product
           </Link>
         )}
+            {isFarmer(user.role) && (
+          <Link onClick={handleClose} to="/dashboard/reports" className="menu-link">
+            <i className="fas fa-chart-line mr-2"></i> Sales Reports
+          </Link>
+        )}
 
 {isFarmer(user.role) && (
           <Link onClick={handleClose} to="/dashboard/Stockmanage" className="menu-link">
-            <i className="fas fa-upload mr-2"></i> Stock Manage
+            <i className="fas fa-warehouse mr-2"></i> Stock Manage
           </Link>
         )}
         {isFarmer(user.role) && (

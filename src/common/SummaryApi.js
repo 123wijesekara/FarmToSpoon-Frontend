@@ -193,10 +193,19 @@ const SummaryApi = {
         url: "/api/ratings/ratings",
         method: "post",
       },
-
+      checkOrderRating: {
+        url: "/api/ratings/check",
+        method: "post",
+      },
       getFarmerById: { url: "/api/user/farmer/:id", method: "post" },
       deleteFarmer: { url: "/api/user/farmer/:id", method: "delete" },
       suspendFarmer: { url: "/api/user/farmer/suspend/:id", method: "patch" },
+
+      getSalesReport: {
+        url: '/api/report/sales',
+        method: 'post'
+    }
+    
       
 }
 
