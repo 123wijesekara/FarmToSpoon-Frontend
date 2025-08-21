@@ -1,18 +1,32 @@
 import React, { useEffect, useState } from 'react';
-import { TrendingUp, Package, Star, Award, Calendar, DollarSign, ShoppingCart, Download, FileText, Table } from 'lucide-react';
+import { TrendingUp, Package, Star, Award, Calendar, DollarSign, ShoppingCart, FileText, Table, ChevronLeft, ChevronRight } from 'lucide-react';
 import Axios from '../utils/Axios';
 import SummaryApi from '../common/SummaryApi';
 import AxiosToastError from '../utils/AxiosToastError';
+import { exportReportToExcel, exportReportToPDF } from '../utils/exportsUtils';
 
 const FarmerReports = () => {
   const [report, setReport] = useState(null);
   const [range, setRange] = useState("monthly");
+  const [month, setMonth] = useState(new Date().getMonth() + 1);
+  const [year, setYear] = useState(new Date().getFullYear());
   const [userId, setUserId] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [availableYears, setAvailableYears] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [productsPerPage, setProductsPerPage] = useState(10);
 
   useEffect(() => {
     const userId = localStorage.getItem("userId");
     setUserId(userId);
+    
+    // Generate available years (last 5 years and next 1 year)
+    const currentYear = new Date().getFullYear();
+    const years = [];
+    for (let i = currentYear - 5; i <= currentYear + 1; i++) {
+      years.push(i);
+    }
+    setAvailableYears(years);
   }, []);
 
   const fetchReport = async () => {
@@ -22,10 +36,16 @@ const FarmerReports = () => {
     try {
       const response = await Axios({
         ...SummaryApi.getSalesReport,
-        data: { farmerId: userId, range }
+        data: { 
+          farmerId: userId, 
+          range,
+          month: range === "monthly" || range === "yearly" ? month : undefined,
+          year: range === "yearly" ? year : undefined
+        }
       });
       if (response.data.success) {
         setReport(response.data.data);
+        setCurrentPage(1); // Reset to first page when report changes
       }
     } catch (err) {
       AxiosToastError(err);
@@ -36,25 +56,18 @@ const FarmerReports = () => {
 
   useEffect(() => {
     fetchReport();
-  }, [range, userId]);
+  }, [range, month, year, userId]);
 
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-LK', {
-      style: 'currency',
-      currency: 'LKR',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(amount);
-  };
-
-  const getRangeLabel = (range) => {
-    const labels = {
-      daily: 'Today',
-      weekly: 'This Week',
-      monthly: 'This Month',
-      yearly: 'This Year'
-    };
-    return labels[range] || range;
+  const getRangeLabel = () => {
+    if (range === "daily") return 'Today';
+    if (range === "weekly") return 'This Week';
+    if (range === "monthly") {
+      const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"];
+      return `${monthNames[month - 1]} ${year}`;
+    }
+    if (range === "yearly") return `Year ${year}`;
+    return range;
   };
 
   const getStarRating = (rating) => {
@@ -80,20 +93,37 @@ const FarmerReports = () => {
     );
   };
 
-  
   const exportToPDF = () => {
-     
-    console.log("Exporting to PDF", report);
-    
+    exportReportToPDF(report, range, month, year);
+  };
   
+  const exportToExcel = () => {
+    exportReportToExcel(report, range, month, year);
   };
 
-   
-  const exportToExcel = () => {
-     
-    console.log("Exporting to Excel", report);
-    
-     
+  const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+
+  // Pagination for products
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = report?.topProducts?.slice(indexOfFirstProduct, indexOfLastProduct) || [];
+  const totalPages = Math.ceil((report?.topProducts?.length || 0) / productsPerPage);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const nextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
   };
 
   return (
@@ -142,24 +172,66 @@ const FarmerReports = () => {
               </div>
               
               {/* Date Range Selector */}
-              <div className="flex items-center space-x-2">
-                <Calendar className="w-5 h-5" style={{ color: '#7f8c8d' }} />
-                <select
-                  value={range}
-                  onChange={(e) => setRange(e.target.value)}
-                  className="bg-white border-2 rounded-xl px-4 py-2 font-medium focus:outline-none focus:ring-2 transition-all duration-200 hover:border-opacity-70"
-                  style={{ 
-                    borderColor: '#a4e25e',
-                    color: '#2c3e50'
-                  }}
-                  onFocus={(e) => e.target.style.borderColor = '#538c11'}
-                  onBlur={(e) => e.target.style.borderColor = '#a4e25e'}
-                >
-                  <option value="daily">Daily Report</option>
-                  <option value="weekly">Weekly Report</option>
-                  <option value="monthly">Monthly Report</option>
-                  <option value="yearly">Yearly Report</option>
-                </select>
+              <div className="flex flex-col md:flex-row gap-3">
+                <div className="flex items-center space-x-2">
+                  <Calendar className="w-5 h-5" style={{ color: '#7f8c8d' }} />
+                  <select
+                    value={range}
+                    onChange={(e) => setRange(e.target.value)}
+                    className="bg-white border-2 rounded-xl px-4 py-2 font-medium focus:outline-none focus:ring-2 transition-all duration-200 hover:border-opacity-70"
+                    style={{ 
+                      borderColor: '#a4e25e',
+                      color: '#2c3e50'
+                    }}
+                    onFocus={(e) => e.target.style.borderColor = '#538c11'}
+                    onBlur={(e) => e.target.style.borderColor = '#a4e25e'}
+                  >
+                    <option value="daily">Daily Report</option>
+                    <option value="weekly">Weekly Report</option>
+                    <option value="monthly">Monthly Report</option>
+                    <option value="yearly">Yearly Report</option>
+                  </select>
+                </div>
+
+                {(range === "monthly" || range === "yearly") && (
+                  <div className="flex items-center space-x-2">
+                    <select
+                      value={month}
+                      onChange={(e) => setMonth(parseInt(e.target.value))}
+                      className="bg-white border-2 rounded-xl px-4 py-2 font-medium focus:outline-none focus:ring-2 transition-all duration-200 hover:border-opacity-70"
+                      style={{ 
+                        borderColor: '#a4e25e',
+                        color: '#2c3e50'
+                      }}
+                    >
+                      {monthNames.map((name, index) => (
+                        <option key={index} value={index + 1}>
+                          {name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+
+                {range === "yearly" && (
+                  <div className="flex items-center space-x-2">
+                    <select
+                      value={year}
+                      onChange={(e) => setYear(parseInt(e.target.value))}
+                      className="bg-white border-2 rounded-xl px-4 py-2 font-medium focus:outline-none focus:ring-2 transition-all duration-200 hover:border-opacity-70"
+                      style={{ 
+                        borderColor: '#a4e25e',
+                        color: '#2c3e50'
+                      }}
+                    >
+                      {availableYears.map((y) => (
+                        <option key={y} value={y}>
+                          {y}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -175,6 +247,14 @@ const FarmerReports = () => {
           </div>
         ) : report ? (
           <div className="space-y-6">
+            {/* Report Period Header */}
+            <div className="bg-white rounded-2xl shadow-xl p-6 border border-gray-100 text-center">
+              <h2 className="text-2xl font-bold" style={{ color: '#538c11' }}>
+                {getRangeLabel()}
+              </h2>
+              <p className="text-gray-600 mt-1">Sales Report Period</p>
+            </div>
+
             {/* Key Metrics Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Total Sales Card */}
@@ -187,7 +267,7 @@ const FarmerReports = () => {
                     </div>
                     <div className="text-right">
                       <p className="text-white text-opacity-80 text-sm font-medium">Total Sales</p>
-                      <p className="text-white text-opacity-60 text-xs">{getRangeLabel(range)}</p>
+                      <p className="text-white text-opacity-60 text-xs">{getRangeLabel()}</p>
                     </div>
                   </div>
                   <div className="text-3xl font-bold mb-2">Rs {report.totalSales.toLocaleString()}</div>
@@ -208,7 +288,7 @@ const FarmerReports = () => {
                     </div>
                     <div className="text-right">
                       <p className="text-white text-opacity-80 text-sm font-medium">Total Orders</p>
-                      <p className="text-white text-opacity-60 text-xs">{getRangeLabel(range)}</p>
+                      <p className="text-white text-opacity-60 text-xs">{getRangeLabel()}</p>
                     </div>
                   </div>
                   <div className="text-3xl font-bold mb-2">{report.totalOrders.toLocaleString()}</div>
@@ -243,60 +323,131 @@ const FarmerReports = () => {
               </div>
             )}
 
-            {/* Top Selling Products */}
+            {/* Top Selling Products by Revenue */}
             <div className="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
-              <div className="flex items-center mb-6">
-                <div className="p-3 rounded-xl mr-4" style={{ background: 'linear-gradient(135deg, #2e4d0a 0%, #538c11 100%)' }}>
-                  <Award className="w-6 h-6 text-white" />
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center">
+                  <div className="p-3 rounded-xl mr-4" style={{ background: 'linear-gradient(135deg, #2e4d0a 0%, #538c11 100%)' }}>
+                    <Award className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold" style={{ color: '#2c3e50' }}>Top Selling Products</h3>
+                    <p style={{ color: '#34495e' }}>Your best performers by revenue</p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-xl font-semibold" style={{ color: '#2c3e50' }}>Top Selling Products</h3>
-                  <p style={{ color: '#34495e' }}>Your best performers this {range.replace('ly', '')}</p>
+                
+                {/* Products per page selector */}
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm" style={{ color: '#34495e' }}>Show:</span>
+                  <select
+                    value={productsPerPage}
+                    onChange={(e) => setProductsPerPage(parseInt(e.target.value))}
+                    className="bg-white border-2 rounded-xl px-2 py-1 font-medium focus:outline-none focus:ring-2 transition-all duration-200"
+                    style={{ 
+                      borderColor: '#a4e25e',
+                      color: '#2c3e50'
+                    }}
+                  >
+                    <option value={5}>5</option>
+                    <option value={10}>10</option>
+                    <option value={20}>20</option>
+                    <option value={50}>50</option>
+                  </select>
                 </div>
               </div>
               
               {report.topProducts && report.topProducts.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {report.topProducts.map((product, index) => (
-                    <div key={product._id} className="rounded-xl p-4 border hover:shadow-lg transition-all duration-300 hover:-translate-y-1" 
-                         style={{ 
-                           backgroundColor: '#f8fdf4',
-                           borderColor: '#a4e25e'
-                         }}>
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center">
-                          <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm`}
-                               style={{ 
-                                 backgroundColor: index === 0 ? '#538c11' : 
-                                                 index === 1 ? '#7f8c8d' : 
-                                                 index === 2 ? '#a4e25e' : 
-                                                 '#95a5a6'
-                               }}>
-                            {index + 1}
+                <>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {currentProducts.map((product, index) => {
+                      const globalIndex = (currentPage - 1) * productsPerPage + index;
+                      return (
+                        <div key={product._id} className="rounded-xl p-4 border hover:shadow-lg transition-all duration-300 hover:-translate-y-1" 
+                             style={{ 
+                               backgroundColor: '#f8fdf4',
+                               borderColor: '#a4e25e'
+                             }}>
+                          <div className="flex items-center justify-between mb-3">
+                            <div className="flex items-center">
+                              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm`}
+                                   style={{ 
+                                     backgroundColor: globalIndex === 0 ? '#538c11' : 
+                                                     globalIndex === 1 ? '#7f8c8d' : 
+                                                     globalIndex === 2 ? '#a4e25e' : 
+                                                     '#95a5a6'
+                                   }}>
+                                {globalIndex + 1}
+                              </div>
+                            </div>
+                            <Package className="w-5 h-5" style={{ color: '#7f8c8d' }} />
+                          </div>
+                          <h4 className="font-semibold mb-2" style={{ color: '#2c3e50' }}>{product.name}</h4>
+                          <div className="mb-2">
+                            <span className="text-sm font-medium" style={{ color: '#538c11' }}>
+                              Rs {product.revenue.toLocaleString()}
+                            </span>
+
+                            <span className="text-xs text-gray-500 ml-2">
+  ({product.quantity} {product.measurementType === 'kg' ? 'Kg' : 'units'} sold)
+</span>
+
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm" style={{ color: '#34495e' }}>Revenue Leader</span>
+                            {globalIndex < 3 && (
+                              <div className="px-2 py-1 rounded-full text-xs font-medium"
+                                   style={{
+                                     backgroundColor: globalIndex === 0 ? '#D8F6B6' : 
+                                                     globalIndex === 1 ? '#e8e9ea' : 
+                                                     '#f0f9e7',
+                                     color: globalIndex === 0 ? '#2e4d0a' :
+                                            globalIndex === 1 ? '#2c3e50' :
+                                            '#538c11'
+                                   }}>
+                                #{globalIndex + 1}
+                              </div>
+                            )}
                           </div>
                         </div>
-                        <Package className="w-5 h-5" style={{ color: '#7f8c8d' }} />
-                      </div>
-                      <h4 className="font-semibold mb-2" style={{ color: '#2c3e50' }}>{product.name}</h4>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm" style={{ color: '#34495e' }}>Best Seller</span>
-                        {index < 3 && (
-                          <div className="px-2 py-1 rounded-full text-xs font-medium"
-                               style={{
-                                 backgroundColor: index === 0 ? '#D8F6B6' : 
-                                                 index === 1 ? '#e8e9ea' : 
-                                                 '#f0f9e7',
-                                 color: index === 0 ? '#2e4d0a' :
-                                        index === 1 ? '#2c3e50' :
-                                        '#538c11'
-                               }}>
-                            #{index + 1}
-                          </div>
-                        )}
-                      </div>
+                      );
+                    })}
+                  </div>
+                  
+                  {/* Pagination */}
+                  {totalPages > 1 && (
+                    <div className="flex justify-center items-center mt-6 space-x-2">
+                      <button
+                        onClick={prevPage}
+                        disabled={currentPage === 1}
+                        className={`p-2 rounded-full ${currentPage === 1 ? 'text-gray-400' : 'text-gray-700 hover:bg-gray-100'}`}
+                      >
+                        <ChevronLeft className="w-5 h-5" />
+                      </button>
+                      
+                      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                        <button
+                          key={page}
+                          onClick={() => paginate(page)}
+                          className={`w-8 h-8 rounded-full ${currentPage === page ? 'bg-green-500 text-white' : 'text-gray-700 hover:bg-gray-100'}`}
+                        >
+                          {page}
+                        </button>
+                      ))}
+                      
+                      <button
+                        onClick={nextPage}
+                        disabled={currentPage === totalPages}
+                        className={`p-2 rounded-full ${currentPage === totalPages ? 'text-gray-400' : 'text-gray-700 hover:bg-gray-100'}`}
+                      >
+                        <ChevronRight className="w-5 h-5" />
+                      </button>
                     </div>
-                  ))}
-                </div>
+                  )}
+                  
+                  <div className="text-center mt-4 text-sm text-gray-500">
+                    Showing {indexOfFirstProduct + 1} to {Math.min(indexOfLastProduct, report.topProducts.length)} of {report.topProducts.length} products
+                  </div>
+                </>
               ) : (
                 <div className="text-center py-8">
                   <Package className="w-16 h-16 mx-auto mb-4" style={{ color: '#a4e25e' }} />

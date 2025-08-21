@@ -33,6 +33,7 @@ import RatingForm from "../components/RatingForm";
 import UserManagement from "../pages/UserManage";
 import FarmerDetails from "../pages/FarmerDetailsforAdmin";
 import FarmerReports from "../pages/FarmerReports";
+import FarmerReport from "../pages/SalesSummery";
 
 const router = createBrowserRouter([
     {
@@ -122,6 +123,10 @@ const router = createBrowserRouter([
                     {
                         path: 'reports',
                         element: <FarmerReports/>
+                    },
+                    {
+                        path: 'report',
+                        element: <FarmerReport/>
                     }
 
 
