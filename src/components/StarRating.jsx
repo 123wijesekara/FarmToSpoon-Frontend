@@ -6,7 +6,7 @@ const StarRating = ({ onRate, initialRating = 0 }) => {
 
   const handleClick = (value) => {
     setRating(value);
-    onRate(value); // Pass rating to parent
+    onRate(value);  
   };
 
   return (

@@ -19,6 +19,13 @@ const validatePassword = (password) => {
     return regex.test(password);
 };
 
+// New phone validation function
+const validatePhone = (phone) => {
+    // Only digits, 10 digits (e.g., 0712345678)
+    const regex = /^\d{10}$/;
+    return regex.test(phone);
+};
+
 const DISTRIBUTION_LOCATIONS = [
     "Katubedda",
     "Rawatawatta",
@@ -36,10 +43,10 @@ const Register = () => {
         password: "",
         confirmPassword: "",
         phone: "",  
-        district: "",   // now compulsory text field
+        district: "",
         address_line: "",  
         role: "USER",  
-        distribution_location: "" // only if farmer
+        distribution_location: ""
     });
 
     const [showPassword, setShowPassword] = useState(false);
@@ -57,12 +64,18 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         
-        if(!validateEmail(data.email)){
-            toast.error("Please enter valid email address");
+        // Validations
+        if (!validateEmail(data.email)) {
+            toast.error("Please enter a valid email address");
             return;
         }
 
-        if(!validatePassword(data.password)){
+        if (!validatePhone(data.phone)) {
+            toast.error("Please enter a valid 10-digit phone number");
+            return;
+        }
+
+        if (!validatePassword(data.password)) {
             toast.error("Password must be at least 6 characters and include at least one letter, number, and special character");
             return;
         }
@@ -246,8 +259,8 @@ const Register = () => {
                             onChange={handleChange}
                             required
                         >
-                            <option value="USER">User</option>
-                            <option value="ADMIN">Admin</option>
+                            <option value="USER">Buyer</option>
+                            {/* <option value="ADMIN">Admin</option> */}
                             <option value="FARMER">Farmer</option>
                         </select>
                     </div>

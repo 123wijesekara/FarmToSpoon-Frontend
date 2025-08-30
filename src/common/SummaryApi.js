@@ -205,7 +205,12 @@ const SummaryApi = {
         url: '/api/report/sales',
         method: 'post'
     }
-    
+    ,
+        contactForm: {
+          url: "/api/contact",
+          method: "post",
+        },
+        
       
 }
 

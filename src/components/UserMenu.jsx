@@ -221,7 +221,7 @@ const UserMenu = ({ close }) => {
         )}
                {isFarmer(user.role) && (
           <Link onClick={handleClose} to="/dashboard/report" className="menu-link">
-            <i className="fas fa-chart-line mr-2"></i> Sales Summery
+            <i className="fas fa-chart-line mr-2"></i> Sales summary
           </Link>
         )}
 
@@ -240,13 +240,16 @@ const UserMenu = ({ close }) => {
             <i className="fas fa-user-friends mr-2"></i> Famer Manage
           </Link>
         )}
-        <Link onClick={handleClose} to="/dashboard/myorders" className="menu-link">
-          <i className="fas fa-history mr-2"></i> My Orders
-        </Link>
-
+    {(!isAdmin(user.role) && !isFarmer(user.role)) && (
+  <Link onClick={handleClose} to="/dashboard/myorders" className="menu-link">
+    <i className="fas fa-history mr-2"></i> My Orders
+  </Link>
+)}
+     {isFarmer(user.role) && (
         <Link onClick={handleClose} to="/dashboard/address" className="menu-link">
           <i className="fas fa-map-marker-alt mr-2"></i> Save Address
         </Link>
+     )}
 
         <button onClick={confirmLogout} className="logout-btn">
           <i className="fas fa-sign-out-alt mr-2"></i> Log Out

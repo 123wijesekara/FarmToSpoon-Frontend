@@ -612,7 +612,8 @@ import { useGlobalContext } from '../provider/GlobalProvider'
 import DisplayCartItem from './DisplayCartItem'
 import Axios from '../utils/Axios';
 import SummaryApi from '../common/SummaryApi';
-
+import isAdmin from '../utils/isAdmin'
+import isFarmer from '../utils/isFarmer'
 const Header = () => {
     const [isMobile] = useMobile()
     const location = useLocation()
@@ -715,8 +716,8 @@ const Header = () => {
                     <nav className='hidden lg:flex items-center gap-10'>
                         <Link to="/home" className='text-lg text-neutral-600 hover:text-green-800'>Home</Link>
                         <Link to="/" className='text-lg text-neutral-600 hover:text-green-800'>Products</Link>
-                        <Link to="/about" className='text-lg text-neutral-600 hover:text-green-800'>About</Link>
-                        <Link to="/contact" className='text-lg text-neutral-600 hover:text-green-800'>Contact</Link>
+                        <Link to="AboutPage" className='text-lg text-neutral-600 hover:text-green-800'>About</Link>
+                        <Link to="ContactPage" className='text-lg text-neutral-600 hover:text-green-800'>Contact</Link>
                     </nav>
 
                     <div className='hidden lg:block'>
@@ -794,24 +795,27 @@ const Header = () => {
                             <button onClick={redirectToLoginPage} className='text-lg px-2'>Login</button>
                         )}
 
-                        <button onClick={() => setOpenCartSection(true)} className='flex items-center gap-2 bg-green-800 hover:bg-green-700 px-3 py-2 rounded text-white'>
-                            <div className='animate-bounce'>
-                                <BsCart4 size={26} />
-                            </div>
-                            <div className='font-semibold text-sm'>
-                                {cartItem[0] ? (
-                                    <>
-                                        <p>{totalQty} Items</p>
-                                        <p>{DisplayPriceInRupees(totalPrice)}</p>
-                                    </>
-                                ) : (
-                                    <p>My Cart</p>
-                                )}
-                            </div>
-                        </button>
+{(!isAdmin(user.role) && !isFarmer(user.role)) && (
+                            <button onClick={() => setOpenCartSection(true)} className='flex items-center gap-2 bg-green-800 hover:bg-green-700 px-3 py-2 rounded text-white'>
+                                <div className='animate-bounce'>
+                                    <BsCart4 size={26} />
+                                </div>
+                                <div className='font-semibold text-sm'>
+                                    {cartItem[0] ? (
+                                        <>
+                                            <p>{totalQty} Items</p>
+                                            <p>{DisplayPriceInRupees(totalPrice)}</p>
+                                        </>
+                                    ) : (
+                                        <p>My Cart</p>
+                                    )}
+                                </div>
+                            </button>
+                        )}
                     </div>
                 </div>
             )}
+        
 
             <div className='container mx-auto px-2 lg:hidden'>
                 <Search />

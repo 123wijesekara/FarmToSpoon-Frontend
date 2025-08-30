@@ -34,7 +34,8 @@ const CheckoutPage = () => {
           addressId: addressList[selectAddress]?._id,
           subTotalAmt: totalPrice,
           totalAmt: totalPrice,
-           userId : userId 
+           userId : userId,
+           
         }
       })
 
@@ -84,9 +85,12 @@ const CheckoutPage = () => {
                   <p className="font-medium">
                     {DisplayPriceInRupees(pricewithDiscount(item?.productId?.price, item?.productId?.discount))}
                   </p>
-                  <p className="text-sm text-gray-600">Farmer: {item?.productId?.userName}</p>
+                  <p className="text-sm text-gray-600">Farmer: {item?.productId?.username}</p>
                   <p className="text-sm text-gray-500">Contact no: {item?.productId?.mobile}</p>
-                  <p className="text-sm text-gray-500">Qty: {item?.quantity}</p>
+                  <p className="text-sm text-gray-500">
+  Qty: {item?.quantity}{item?.productId?.unit?.replace(/^\d+/, "").trim()}
+</p>
+
                 
                 </div>
                 <button

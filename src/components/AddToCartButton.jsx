@@ -7,29 +7,33 @@ import AxiosToastError from '../utils/AxiosToastError'
 import Loading from './Loading'
 import { useSelector } from 'react-redux'
 import { FaMinus, FaPlus } from "react-icons/fa6";
+import isFarmer from '../utils/isFarmer'
+import isAdmin from '../utils/isAdmin'
+
 
 const AddToCartButton = ({ data }) => {
     const { fetchCartItem, updateCartItem, deleteCartItem } = useGlobalContext()
     const [loading, setLoading] = useState(false)
+     const user = useSelector((state) => state.user)
     const cartItem = useSelector(state => state.cartItem.cart)
     const [isAvailableCart, setIsAvailableCart] = useState(false)
     const [qty, setQty] = useState(0)
     const [cartItemDetails,setCartItemsDetails] = useState()
-
+    const unitLabel = data?.unit?.replace(/^\d+/, "").trim(); 
     const handleADDTocart = async (e) => {
         e.preventDefault()
         e.stopPropagation()
 
         try {
             setLoading(true)
-
+ //console.log("Adding to cart", data)
             const response = await Axios({
                 ...SummaryApi.addTocart,
                 data: {
                     productId: data?._id
                 }
             })
-
+      
             const { data: responseData } = response
 
             if (responseData.success) {
@@ -46,7 +50,7 @@ const AddToCartButton = ({ data }) => {
 
     }
 
-    //checking this item in cart or not
+    
     useEffect(() => {
         const checkingitem = cartItem.some(item => item.productId._id === data._id)
         setIsAvailableCart(checkingitem)
@@ -82,25 +86,42 @@ const AddToCartButton = ({ data }) => {
         }
     }
     return (
-        <div className='w-full max-w-[150px]'>
-            {
-                isAvailableCart ? (
-                    <div className='flex w-full h-full'>
-                        <button onClick={decreaseQty} className='bg-green-600 hover:bg-green-700 text-white flex-1 w-full p-1 rounded flex items-center justify-center'><FaMinus /></button>
-
-                        <p className='flex-1 w-full font-semibold px-1 flex items-center justify-center'>{qty}</p>
-
-                        <button onClick={increaseQty} className='bg-green-600 hover:bg-green-700 text-white flex-1 w-full p-1 rounded flex items-center justify-center'><FaPlus /></button>
-                    </div>
-                ) : (
-                    <button onClick={handleADDTocart} className='bg-green-600 hover:bg-green-700 text-white px-2 lg:px-4 py-1 rounded'>
-                        {loading ? <Loading /> : "Add"}
-                    </button>
-                )
-            }
-
+        <div className="w-full max-w-[150px]">
+          {isAvailableCart ? (
+            <div className="flex w-full h-full">
+              <button
+                onClick={decreaseQty}
+                className="bg-green-600 hover:bg-green-700 text-white flex-1 w-full p-1 rounded flex items-center justify-center"
+              >
+                <FaMinus />
+              </button>
+      
+              <p className="flex-1 w-full font-semibold px-1 flex items-center justify-center">
+                {qty}
+                {unitLabel}
+              </p>
+      
+              <button
+                onClick={increaseQty}
+                className="bg-green-600 hover:bg-green-700 text-white flex-1 w-full p-1 rounded flex items-center justify-center"
+              >
+                <FaPlus />
+              </button>
+            </div>
+          ) : (
+            !isAdmin(user.role) &&
+            !isFarmer(user.role) && (
+              <button
+                onClick={handleADDTocart}
+                className="bg-green-600 hover:bg-green-700 text-white px-2 lg:px-4 py-1 rounded"
+              >
+                {loading ? <Loading /> : "Add"}
+              </button>
+            )
+          )}
         </div>
-    )
+      );
+      
 }
 
 export default AddToCartButton

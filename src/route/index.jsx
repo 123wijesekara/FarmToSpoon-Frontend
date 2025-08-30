@@ -33,7 +33,9 @@ import RatingForm from "../components/RatingForm";
 import UserManagement from "../pages/UserManage";
 import FarmerDetails from "../pages/FarmerDetailsforAdmin";
 import FarmerReports from "../pages/FarmerReports";
-import FarmerReport from "../pages/SalesSummery";
+import FarmerReport from "../pages/SalesSummary";
+import AboutPage from "../pages/AboutPage";
+import ContactPage from "../pages/ContactUs";
 
 const router = createBrowserRouter([
     {
@@ -43,6 +45,10 @@ const router = createBrowserRouter([
             {
                 path : "/home",
                 element : <HomePage/>
+            },
+            {
+                path: 'AboutPage',
+                element: <AboutPage/>
             },
             {
                 path : "",
@@ -79,6 +85,10 @@ const router = createBrowserRouter([
             {
                 path : "user",
                 element : <UserMenuMobile/>
+            },
+            {
+                path:"ContactPage",
+                element:<ContactPage/>
             },
             {
                 path : "dashboard",
@@ -127,9 +137,10 @@ const router = createBrowserRouter([
                     {
                         path: 'report',
                         element: <FarmerReport/>
-                    }
+                    },
+                  
 
-
+                     
                      
                 ]
             },
