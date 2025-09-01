@@ -224,10 +224,10 @@ const FarmerDetails = () => {
                       {farmer.createdAt ? new Date(farmer.createdAt).toLocaleDateString() : 'N/A'}
                     </p>
                   </div>
-                  <div className="bg-green-50 rounded-lg p-3">
+                  {/* <div className="bg-green-50 rounded-lg p-3">
                     <p className="text-green-600 text-sm font-medium">Orders</p>
                     <p className="text-green-900 font-semibold">{farmer.totalOrders || 0}</p>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
@@ -262,15 +262,21 @@ const FarmerDetails = () => {
                       <p className="text-gray-900">{farmer.email || ''}</p>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-500 mb-1">Address</label>
-                      <p className="text-gray-900">{farmer.address || ''}</p>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-500 mb-1">Registration Date</label>
-                      <p className="text-gray-900">
-                        {farmer.createdAt ? new Date(farmer.createdAt).toLocaleDateString() : ''}
-                      </p>
-                    </div>
+  <label className="block text-sm font-medium text-gray-500 mb-1">Address</label>
+  {farmer.address_details && farmer.address_details.length > 0 ? (
+    <ul className="text-gray-900 list-disc ml-5">
+      {farmer.address_details.map((addr, index) => (
+        <li key={index}>
+          {addr.address_line}, {addr.city}
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <p className="text-gray-900">No address available</p>
+  )}
+</div>
+
+                    
                   </div>
                 </div>
               </div>

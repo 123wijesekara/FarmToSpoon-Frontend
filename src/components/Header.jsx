@@ -645,10 +645,10 @@ const Header = () => {
 
                 const filtered = orders.filter(order => {
                     if (user.role === "USER") {
-                        return ["pending","processing", "shipped", "ready_to_pick","delivered"].includes(order.status)
+                        return ["pending","processing", "ready_to_pick","Picked Up"].includes(order.status)
                     } else if (user.role === "FARMER") {
-                        // Show orders that are not delivered or cancelled
-                        return !["delivered"].includes(order.status)
+                    
+                        return !["Picked Up"].includes(order.status)
                     }
                     return false
                 })

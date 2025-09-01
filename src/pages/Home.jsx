@@ -175,7 +175,7 @@ const Home = () => {
               onClick={() => setShowDistrictDropdown(!showDistrictDropdown)}
               className={`home-filter-button ${selectedDistrict ? 'active' : ''}`}
             >
-              {selectedDistrict || 'Filter by District'}
+              {selectedDistrict || 'Filter by Area'}
             </button>
 
             {showDistrictDropdown && (

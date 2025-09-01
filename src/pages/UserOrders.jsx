@@ -214,13 +214,7 @@ const FarmerOrders = () => {
             icon: <FaBox className="w-4 h-4" />,
             description: 'Preparing the order'
         },
-        { 
-            value: 'shipped', 
-            label: 'Shipped', 
-            color: 'text-purple-600 bg-purple-100',
-            icon: <FaTruck className="w-4 h-4" />,
-            description: 'Order is on the way'
-        },
+     
         { 
             value: 'ready_to_pick', 
             label: 'Ready to Pick', 
@@ -229,8 +223,8 @@ const FarmerOrders = () => {
             description: 'Ready for customer pickup'
         },
         { 
-            value: 'delivered', 
-            label: 'Delivered', 
+            value: 'Picked Up', 
+            label: 'Picked Up', 
             color: 'text-red-700 bg-red-200',
             icon: <FaCheckCircle className="w-4 h-4" />,
             description: 'Order completed'
@@ -248,9 +242,9 @@ const FarmerOrders = () => {
         { value: 'all', label: 'All Orders' },
         { value: 'pending', label: 'New Orders' },
         { value: 'processing', label: 'Processing' },
-        { value: 'shipped', label: 'Shipped' },
+     
         { value: 'ready_to_pick', label: 'Ready to Pick' },
-        { value: 'delivered', label: 'Delivered' },
+        { value: 'Picked Up', label: 'Picked Up' },
         { value: 'cancelled', label: 'Cancelled' }
     ]
 
@@ -382,16 +376,11 @@ const FarmerOrders = () => {
                         {orders.filter(order => order.status === 'processing').length}
                     </p>
                 </div>
-                <div className="bg-white p-4 rounded-lg shadow-sm border">
-                    <h3 className="text-sm font-medium text-gray-500">Ready/Shipped</h3>
-                    <p className="text-2xl font-bold text-purple-600">
-                        {orders.filter(order => ['shipped', 'ready_to_pick'].includes(order.status)).length}
-                    </p>
-                </div>
+              
                 <div className="bg-white p-4 rounded-lg shadow-sm border">
                     <h3 className="text-sm font-medium text-gray-500">Completed</h3>
                     <p className="text-2xl font-bold text-green-600">
-                        {orders.filter(order => order.status === 'delivered').length}
+                        {orders.filter(order => order.status === 'Picked Up').length}
                     </p>
                 </div>
             </div>

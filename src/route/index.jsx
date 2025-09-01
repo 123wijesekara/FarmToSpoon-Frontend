@@ -33,9 +33,11 @@ import RatingForm from "../components/RatingForm";
 import UserManagement from "../pages/UserManage";
 import FarmerDetails from "../pages/FarmerDetailsforAdmin";
 import FarmerReports from "../pages/FarmerReports";
-import FarmerReport from "../pages/SalesSummary";
+ 
 import AboutPage from "../pages/AboutPage";
 import ContactPage from "../pages/ContactUs";
+import BuyerDetails from "../pages/BuyerDetailsforAdmin";
+import BuyerManagement from "../pages/BuyerManagement";
 
 const router = createBrowserRouter([
     {
@@ -131,13 +133,14 @@ const router = createBrowserRouter([
                         element : <AdminPermision><UserManagement/></AdminPermision>
                     },
                     {
-                        path: 'reports',
-                        element: <FarmerReports/>
+                        path : 'buyermanage',
+                        element : <AdminPermision><BuyerManagement/></AdminPermision>
                     },
                     {
-                        path: 'report',
-                        element: <FarmerReport/>
-                    },
+                        path: 'reports',
+                        element: <FarmerReports/>
+                    }
+                
                   
 
                      
@@ -192,7 +195,11 @@ element:<RatingForm/>
 },
  
 
-
+{
+    path: "/buyer/:id",
+    element: <BuyerDetails />
+  }
+  
         ]
     }
 ])

@@ -1,9 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { TrendingUp, Package, Star, Award, Calendar, DollarSign, ShoppingCart, FileText, Table, ChevronLeft, ChevronRight } from 'lucide-react';
+ import React, { useEffect, useState } from 'react';
+import { TrendingUp, Package, Star, Award, Calendar, DollarSign, ShoppingCart, FileText, Table, ChevronLeft, ChevronRight, PieChart } from 'lucide-react';
 import Axios from '../utils/Axios';
 import SummaryApi from '../common/SummaryApi';
 import AxiosToastError from '../utils/AxiosToastError';
 import { exportReportToExcel, exportReportToPDF } from '../utils/exportsUtils';
+import { Doughnut, Pie } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const FarmerReports = () => {
   const [report, setReport] = useState(null);
@@ -11,15 +21,23 @@ const FarmerReports = () => {
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [year, setYear] = useState(new Date().getFullYear());
   const [userId, setUserId] = useState(null);
+  const [farmerName, setfarmerName] = useState(null);
   const [loading, setLoading] = useState(false);
   const [availableYears, setAvailableYears] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage, setProductsPerPage] = useState(10);
+  const [activeChart, setActiveChart] = useState('revenue'); 
 
   useEffect(() => {
     const userId = localStorage.getItem("userId");
-    setUserId(userId);
     
+     
+    setUserId(userId);
+     
+    const farmerName = localStorage.getItem("username");
+    setfarmerName(farmerName);
+     
+ 
     // Generate available years (last 5 years and next 1 year)
     const currentYear = new Date().getFullYear();
     const years = [];
@@ -56,7 +74,7 @@ const FarmerReports = () => {
 
   useEffect(() => {
     fetchReport();
-  }, [range, month, year, userId]);
+  }, [range, month, year, userId,farmerName]);
 
   const getRangeLabel = () => {
     if (range === "daily") return 'Today';
@@ -94,7 +112,7 @@ const FarmerReports = () => {
   };
 
   const exportToPDF = () => {
-    exportReportToPDF(report, range, month, year);
+    exportReportToPDF(report, range, month, year,farmerName);
   };
   
   const exportToExcel = () => {
@@ -125,6 +143,50 @@ const FarmerReports = () => {
       setCurrentPage(currentPage - 1);
     }
   };
+
+  // Prepare data for pie charts
+  const getProductChartData = () => {
+    if (!report?.topProducts || report.topProducts.length === 0) return null;
+    
+    const top10Products = report.topProducts.slice(0, 10);
+    const labels = top10Products.map(product => product.name);
+    
+    const revenueData = top10Products.map(product => product.revenue);
+    const quantityData = top10Products.map(product => product.quantity);
+    
+    // Generate colors for the chart
+    const generateColors = (count) => {
+      const colors = [
+        '#538c11', '#a4e25e', '#2e4d0a', '#8bc34a', '#4caf50',
+        '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722'
+      ];
+      return colors.slice(0, count);
+    };
+    
+    const backgroundColors = generateColors(top10Products.length);
+    
+    return {
+      labels,
+      datasets: [
+        {
+          label: 'Revenue (Rs)',
+          data: revenueData,
+          backgroundColor: backgroundColors,
+          borderColor: backgroundColors.map(color => color + '80'),
+          borderWidth: 1,
+        },
+        {
+          label: 'Quantity Sold',
+          data: quantityData,
+          backgroundColor: backgroundColors,
+          borderColor: backgroundColors.map(color => color + '80'),
+          borderWidth: 1,
+        }
+      ]
+    };
+  };
+
+  const productChartData = getProductChartData();
 
   return (
     <div className="min-h-screen p-4" style={{ backgroundColor: '#D8F6B6' }}>
@@ -299,6 +361,162 @@ const FarmerReports = () => {
                 </div>
               </div>
             </div>
+
+            {/* Product Distribution Charts */}
+            {productChartData && (
+              <div className="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center">
+                    <div className="p-3 rounded-xl mr-4" style={{ background: 'linear-gradient(135deg, #a4e25e 0%, #538c11 100%)' }}>
+                      <PieChart className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold" style={{ color: '#2c3e50' }}>Product Distribution</h3>
+                      <p style={{ color: '#34495e' }}>Sales breakdown by product</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center space-x-2">
+                    <button
+                      onClick={() => setActiveChart('revenue')}
+                      className={`px-3 py-1 rounded-lg font-medium transition-all duration-200 ${
+                        activeChart === 'revenue' 
+                          ? 'text-white' 
+                          : 'text-gray-600 hover:bg-gray-100'
+                      }`}
+                      style={{ 
+                        backgroundColor: activeChart === 'revenue' ? '#538c11' : 'transparent'
+                      }}
+                    >
+                      Revenue
+                    </button>
+                    <button
+                      onClick={() => setActiveChart('quantity')}
+                      className={`px-3 py-1 rounded-lg font-medium transition-all duration-200 ${
+                        activeChart === 'quantity' 
+                          ? 'text-white' 
+                          : 'text-gray-600 hover:bg-gray-100'
+                      }`}
+                      style={{ 
+                        backgroundColor: activeChart === 'quantity' ? '#538c11' : 'transparent'
+                      }}
+                    >
+                      Quantity
+                    </button>
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="flex flex-col items-center">
+                    <div className="w-64 h-64">
+                      {activeChart === 'revenue' ? (
+                        <Doughnut 
+                          data={{
+                            labels: productChartData.labels,
+                            datasets: [productChartData.datasets[0]]
+                          }}
+                          options={{
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            plugins: {
+                              legend: {
+                                position: 'bottom',
+                                labels: {
+                                  boxWidth: 12,
+                                  padding: 15
+                                }
+                              },
+                              tooltip: {
+                                callbacks: {
+                                  label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: Rs ${value.toLocaleString()} (${percentage}%)`;
+                                  }
+                                }
+                              }
+                            }
+                          }}
+                        />
+                      ) : (
+                        <Doughnut 
+                          data={{
+                            labels: productChartData.labels,
+                            datasets: [productChartData.datasets[1]]
+                          }}
+                          options={{
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            plugins: {
+                              legend: {
+                                position: 'bottom',
+                                labels: {
+                                  boxWidth: 12,
+                                  padding: 15
+                                }
+                              },
+                              tooltip: {
+                                callbacks: {
+                                  label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    const product = report.topProducts.find(p => p.name === label);
+                                    const unit = product?.measurementType === 'kg' ? 'kg' : 'units';
+                                    return `${label}: ${value.toLocaleString()} ${unit} (${percentage}%)`;
+                                  }
+                                }
+                              }
+                            }
+                          }}
+                        />
+                      )}
+                    </div>
+                    <p className="mt-4 text-sm text-gray-600 text-center">
+                      {activeChart === 'revenue' 
+                        ? 'Revenue distribution across top products' 
+                        : 'Quantity sold distribution across top products'}
+                    </p>
+                  </div>
+                  
+                  <div className="flex flex-col justify-center">
+                    <div className="space-y-3 max-h-64 overflow-y-auto pr-2">
+                      {report.topProducts.slice(0, 10).map((product, index) => {
+                        const total = activeChart === 'revenue' 
+                          ? report.topProducts.reduce((sum, p) => sum + p.revenue, 0)
+                          : report.topProducts.reduce((sum, p) => sum + p.quantity, 0);
+                          
+                        const value = activeChart === 'revenue' ? product.revenue : product.quantity;
+                        const percentage = Math.round((value / total) * 100);
+                        
+                        return (
+                          <div key={product._id} className="flex items-center justify-between p-2 rounded-lg hover:bg-gray-50">
+                            <div className="flex items-center">
+                              <div 
+                                className="w-3 h-3 rounded-full mr-2"
+                                style={{ backgroundColor: productChartData.datasets[0].backgroundColor[index] }}
+                              ></div>
+                              <span className="text-sm font-medium truncate max-w-xs">{product.name}</span>
+                            </div>
+                            <div className="text-right">
+                              <div className="text-sm font-semibold">
+                                {activeChart === 'revenue' 
+                                  ? `Rs ${value.toLocaleString()}` 
+                                  : `${value.toLocaleString()} ${product.measurementType === 'kg' ? 'kg' : 'units'}`}
+                              </div>
+                              <div className="text-xs text-gray-500">{percentage}%</div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Average Order Value */}
             {report.totalOrders > 0 && (

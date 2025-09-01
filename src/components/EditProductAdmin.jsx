@@ -27,6 +27,7 @@ const EditProductAdmin = ({ close ,data : propsData,fetchProductData}) => {
     discount: propsData.discount,
     description: propsData.description,
     more_details: propsData.more_details || {},
+    location: propsData.location 
   })
   const [imageLoading, setImageLoading] = useState(false)
   const [ViewImageURL, setViewImageURL] = useState("")
@@ -145,7 +146,9 @@ const EditProductAdmin = ({ close ,data : propsData,fetchProductData}) => {
           discount: "",
           description: "",
           more_details: {},
+          location:""
         });
+        
       }
     } catch (error) {
       AxiosToastError(error);
@@ -326,7 +329,20 @@ const EditProductAdmin = ({ close ,data : propsData,fetchProductData}) => {
                   </div>
                 </div>
               </div>
-
+              <div className='grid gap-1'>
+                <label htmlFor='location' className='font-medium'>Selling location</label>
+                <input
+                  id='location'
+                  type='text'
+                  placeholder='Enter selling location'
+                  name='location'
+                  value={data.location}
+                  onChange={handleChange}
+                  required
+                  className='bg-blue-50 p-2 outline-none border focus-within:border-primary-200 rounded'
+                />
+              </div>
+              
               <div className='grid gap-1'>
                 <label htmlFor='unit' className='font-medium'>Unit</label>
                 <input

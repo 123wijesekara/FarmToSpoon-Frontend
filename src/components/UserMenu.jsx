@@ -187,8 +187,12 @@ const UserMenu = ({ close }) => {
   return (
     <div className="user-menu">
       <div className="user-account-header">My Account</div>
+      
       <div className="user-info">
-        <span className="user-name">{user.name || user.mobile} <span className="user-role">{user.role === "FARMER" ? "(Farmer)" : ""}</span></span>
+        <div className="user-name">
+          {user.name || user.mobile} 
+          <span className="user-role">{user.role === "FARMER" ? " (Farmer)" : ""}</span>
+        </div>
         <Link onClick={handleClose} to="/dashboard/profile" className="external-link">
           <HiOutlineExternalLink size={15} />
         </Link>
@@ -214,42 +218,47 @@ const UserMenu = ({ close }) => {
             <i className="fas fa-upload mr-2"></i> Upload Product
           </Link>
         )}
-            {isFarmer(user.role) && (
+        
+        {isFarmer(user.role) && (
           <Link onClick={handleClose} to="/dashboard/reports" className="menu-link">
             <i className="fas fa-chart-line mr-2"></i> Sales Reports
           </Link>
         )}
-               {isFarmer(user.role) && (
-          <Link onClick={handleClose} to="/dashboard/report" className="menu-link">
-            <i className="fas fa-chart-line mr-2"></i> Sales summary
-          </Link>
-        )}
-
-{isFarmer(user.role) && (
+      
+        {isFarmer(user.role) && (
           <Link onClick={handleClose} to="/dashboard/Stockmanage" className="menu-link">
             <i className="fas fa-warehouse mr-2"></i> Stock Manage
           </Link>
         )}
+        
         {isFarmer(user.role) && (
           <Link onClick={handleClose} to="/dashboard/product" className="menu-link">
             <i className="fas fa-box mr-2"></i> Product
           </Link>
         )}
-{isAdmin(user.role) && (
+        
+        {isAdmin(user.role) && (
           <Link onClick={handleClose} to="/dashboard/usermanage" className="menu-link">
-            <i className="fas fa-user-friends mr-2"></i> Famer Manage
+            <i className="fas fa-user-friends mr-2"></i> Farmer Manage
           </Link>
         )}
-    {(!isAdmin(user.role) && !isFarmer(user.role)) && (
-  <Link onClick={handleClose} to="/dashboard/myorders" className="menu-link">
-    <i className="fas fa-history mr-2"></i> My Orders
-  </Link>
-)}
-     {isFarmer(user.role) && (
-        <Link onClick={handleClose} to="/dashboard/address" className="menu-link">
-          <i className="fas fa-map-marker-alt mr-2"></i> Save Address
-        </Link>
-     )}
+           {isAdmin(user.role) && (
+          <Link onClick={handleClose} to="/dashboard/buyermanage" className="menu-link">
+            <i className="fas fa-user-friends mr-2"></i> Buyer Manage
+          </Link>
+        )}
+        
+        {(!isAdmin(user.role) && !isFarmer(user.role)) && (
+          <Link onClick={handleClose} to="/dashboard/myorders" className="menu-link">
+            <i className="fas fa-history mr-2"></i> My Orders
+          </Link>
+        )}
+        
+        {isFarmer(user.role) && (
+          <Link onClick={handleClose} to="/dashboard/address" className="menu-link">
+            <i className="fas fa-map-marker-alt mr-2"></i> Save Address
+          </Link>
+        )}
 
         <button onClick={confirmLogout} className="logout-btn">
           <i className="fas fa-sign-out-alt mr-2"></i> Log Out

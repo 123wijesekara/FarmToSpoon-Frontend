@@ -26,7 +26,11 @@ const MyOrders = () => {
                       src={order.product_details.image[0]} 
                       className='w-14 h-14'
                     />  
-                    <p className='font-medium'>{order.product_details.name}</p>
+               <p className="font-medium">{order.product_details.name}</p>
+<p className="text-gray-600 text-sm">
+  Order Date: {new Date(order.createdAt).toISOString().split("T")[0]}
+</p>
+
                   </div>
               </div>
             )

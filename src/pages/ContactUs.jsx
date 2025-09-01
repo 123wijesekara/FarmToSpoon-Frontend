@@ -65,7 +65,7 @@ const ContactPage = () => {
         <p className="text-lg font-semibold">Call us: +11 188 888</p>
         <p className="text-gray-700">Email us: admin@gmail.com</p>
         <p className="text-gray-700">
-          Visit us: 123 Example St, Suite 123, Colombo
+        No. 45, Galle Road, Bambalapitiya, Colombo 04, Sri Lanka
         </p>
       </div>
 

@@ -21,6 +21,7 @@ const BuyerOrders = () => {
   const navigate = useNavigate()
 
   const user = useSelector((state) => state.user)
+ 
 
   const orderStatuses = [
     {
@@ -38,13 +39,6 @@ const BuyerOrders = () => {
       description: 'Order is being prepared',
     },
     {
-      value: 'shipped',
-      label: 'Shipped',
-      color: 'text-purple-600 bg-purple-100',
-      icon: <FaTruck className="w-4 h-4" />,
-      description: 'Order is on the way',
-    },
-    {
       value: 'ready_to_pick',
       label: 'Ready to Pick',
       color: 'text-green-600 bg-green-100',
@@ -52,11 +46,11 @@ const BuyerOrders = () => {
       description: 'Order is ready for pickup',
     },
     {
-      value: 'delivered',
-      label: 'Delivered',
-      color: 'text-green-700 bg-green-200',
+      value: 'Picked Up',
+      label: 'Picked Up',
+      color: 'text-purple-600 bg-purple-100',
       icon: <FaCheckCircle className="w-4 h-4" />,
-      description: 'Order has been delivered',
+      description: 'Order has been picked up by the buyer',
     },
     {
       value: 'cancelled',
@@ -65,18 +59,19 @@ const BuyerOrders = () => {
       icon: <FaTimesCircle className="w-4 h-4" />,
       description: 'Order has been cancelled',
     },
-  ]
-
+  ];
+  
   const filterOptions = [
     { value: 'all', label: 'All Orders' },
     { value: 'pending', label: 'Pending' },
     { value: 'processing', label: 'Processing' },
-    { value: 'shipped', label: 'Shipped' },
     { value: 'ready_to_pick', label: 'Ready to Pick' },
-    { value: 'delivered', label: 'Delivered' },
+    { value: 'Picked Up', label: 'Picked Up' },
     { value: 'cancelled', label: 'Cancelled' },
-  ]
-
+  ];
+  
+ 
+  
   useEffect(() => {
     const loadOrders = async () => {
       try {
@@ -226,7 +221,7 @@ const BuyerOrders = () => {
                         </div>
                       </div>
 
-                      {currentStatus === 'delivered' && (
+                      {currentStatus === 'Picked Up' && (
                         <div className="mt-4 flex gap-4 items-center">
                           <p className="text-green-700 font-medium">
                             Would you like to rate this product?

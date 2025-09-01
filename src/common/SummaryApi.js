@@ -103,6 +103,10 @@ const SummaryApi = {
         url : '/api/product/get-product-details',
         method : 'post'
     },
+    // getFarmerDetails: {
+    //     url: '/api/get-farmer-details',
+    //     method: 'post'
+    //   },
     updateProductDetails : {
         url : "/api/product/update-product-details",
         method : 'put'
@@ -200,7 +204,28 @@ const SummaryApi = {
       getFarmerById: { url: "/api/user/farmer/:id", method: "post" },
       deleteFarmer: { url: "/api/user/farmer/:id", method: "delete" },
       suspendFarmer: { url: "/api/user/farmer/suspend/:id", method: "patch" },
-
+ 
+ 
+getBuyerById: { 
+    url: "/api/user/buyer/:id", 
+    method: "post" 
+  },
+  
+  deleteBuyer: { 
+    url: "/api/user/buyer/:id", 
+    method: "delete" 
+  },
+  
+  suspendBuyer: { 
+    url: "/api/user/buyer/suspend/:id", 
+    method: "patch" 
+  },
+  
+    getAllBuyers: { 
+    url: "/api/user/get-all-buyers", 
+    method: "get" 
+  },
+  
       getSalesReport: {
         url: '/api/report/sales',
         method: 'post'

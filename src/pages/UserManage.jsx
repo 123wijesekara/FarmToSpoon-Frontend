@@ -36,6 +36,7 @@ const UserManagement = () => {
     try {
       const response = await Axios({
         ...SummaryApi.getAllFarmers,
+       
         data: { userId },
       });
       if (response.data.success && Array.isArray(response.data.data)) {
@@ -61,7 +62,7 @@ const UserManagement = () => {
 
   return (
     <div className="p-4 max-w-6xl mx-auto">
-      <h1 className="text-xl font-bold mb-4">User Management</h1>
+      <h1 className="text-xl font-bold mb-4">Farmer Management</h1>
 
       <div className="mb-4 flex items-center">
         <input

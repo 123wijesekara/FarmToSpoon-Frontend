@@ -11,6 +11,7 @@ import Axios from '../utils/Axios';
 import SummaryApi from '../common/SummaryApi';
 import AxiosToastError from '../utils/AxiosToastError';
 import successAlert from '../utils/SuccessAlert';
+import { useNavigate } from "react-router-dom";
 
 const MORATUWA_AREAS = [
   "Katubedda",
@@ -47,6 +48,7 @@ const UploadProduct = () => {
   const [selectSubCategory, setSelectSubCategory] = useState("");
   const [openAddField, setOpenAddField] = useState(false);
   const [fieldName, setFieldName] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -124,6 +126,8 @@ const UploadProduct = () => {
           location: "",
           more_details: {},
         });
+        navigate("/");
+
       }
     } catch (error) {
       AxiosToastError(error);

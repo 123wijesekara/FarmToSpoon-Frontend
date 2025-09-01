@@ -136,7 +136,7 @@ const ProductDisplayPage = () => {
       </div>
 
       <div className='p-4 lg:pl-7 text-base lg:text-lg'>
-        <p className='bg-green-300 w-fit px-2 rounded-full'>10 Min</p>
+        <p className='bg-green-300 w-fit px-2 rounded-full'>{data.location}</p>
 
         {/* Name + Rating Stars */}
         <div className='mb-1'>
@@ -207,7 +207,7 @@ const ProductDisplayPage = () => {
             <img src={image3} alt='Quick and Easy Access' className='w-20 h-20' />
             <div className='text-sm'>
               <div className='font-semibold'>Quick and Easy Access</div>
-              <p>Enjoy the convenience of accessing fresh, locally grown products with just a few clicks, delivered directly to your doorstep or available at nearby pickup points.</p>
+              <p>Enjoy the convenience of accessing fresh, locally grown products with just a few clicks.</p>
             </div>
           </div>
         </div>

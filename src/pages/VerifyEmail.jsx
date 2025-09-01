@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { FaEnvelopeOpenText } from 'react-icons/fa';
-import Axios from '../utils/Axios'; // ✅ Your custom Axios instance
+import Axios from '../utils/Axios';  
 import SummaryApi from '../common/SummaryApi';
 import mailImage from '../assets/logof.png';
 import '../pages/VerifyEmail.css';

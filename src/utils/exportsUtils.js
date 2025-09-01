@@ -3,9 +3,11 @@ import jsPDF from "jspdf";
 import * as XLSX from "xlsx";
 import autoTable from "jspdf-autotable";
 
-export const exportReportToPDF = (report, range, month, year, farmerName = "Farmer", farmName = "Farm") => {
+ 
+ 
+export const exportReportToPDF = (report, range, month, year, farmerName) => {
   if (!report) return;
-
+ 
   const doc = new jsPDF();
   const pageWidth = doc.internal.pageSize.width;
   const pageHeight = doc.internal.pageSize.height;
